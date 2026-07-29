@@ -52,6 +52,8 @@ class DoublyLinkedList<T> {
     node.next = undefined;
     node.prev = undefined;
 
+    this.length--;
+
     return node;
   }
 }
