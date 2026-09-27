@@ -1,4 +1,4 @@
-import { LFU } from "./lfu";
+import { LFU } from "./solution";
 import { test, describe, expect } from "vitest";
 
 describe("LFU", () => {

@@ -1,10 +1,12 @@
 {
   "name": "avacado-machine",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "A personal kata practice machine",
+  "bin": {
+    "avocado": "./src/cli.mjs"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node --test tests/*.test.mjs && vitest run"
   },
   "repository": {
     "type": "git",
@@ -20,5 +22,9 @@
   "homepage": "https://github.com/vigneshTheDev/avacado-machine#readme",
   "devDependencies": {
     "vitest": "^4.1.10"
+  },
+  "dependencies": {
+    "ink": "^7.1.1",
+    "react": "^19.3.0"
   }
 }
