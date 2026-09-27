@@ -1,0 +1,17 @@
+{
+  "id": 32,
+  "title": "Kth Smallest Element In a Bst",
+  "variants": {
+    "ts": {
+      "runner": "typescript-vitest",
+      "sm2": {
+        "repetitions": 1,
+        "easeFactor": 2.6,
+        "intervalDays": 1,
+        "dueDate": "2026-09-28",
+        "lastGrade": 5,
+        "lastReviewedAt": "2026-09-27"
+      }
+    }
+  }
+}

@@ -153,6 +153,7 @@ function App({initialCollection, initialCount}) {
     if (input === 's' && screen === 'practice') { setMode('search'); setDraft(query); return; }
     if (input === 'c' && screen === 'practice') { setQuery(''); setSelectedIndex(0); return; }
     if (input === 't' && screen === 'practice' && !testing) { testActive(); return; }
+    if (input === 'x' && screen === 'practice') { setTestResult(null); setMessage(''); return; }
     if (input === 'q') { exit(); return; }
     if (key.upArrow || input === 'k') setSelectedIndex(index => Math.max(0, index - 1));
     else if (key.downArrow || input === 'j') setSelectedIndex(index => Math.min((screen === 'collections' ? names.length : rows.length) - 1, index + 1));
@@ -161,11 +162,11 @@ function App({initialCollection, initialCount}) {
   });
 
   const preview = highlighted ? fs.readFileSync(path.join(highlighted.dir, 'description.md'), 'utf8').trim().split('\n').slice(0, 14).join('\n') : '';
-  const output = testResult?.output?.split('\n').slice(-14).join('\n');
+  const output = testResult?.output;
 
   return h(Box, {flexDirection: 'column', paddingX: 1},
     h(Text, {bold: true, color: 'green'}, '🥑 AVOCADO  ·  personal kata machine'),
-    h(Text, {dimColor: true}, screen === 'practice' ? `${collection}  ·  ${count === undefined ? '3 due + 3 new' : `${count} suggestions`}  ·  ${items.length} problems` : 'Practice collections'),
+    h(Text, {dimColor: true}, screen === 'practice' ? `${collection}  ·  TypeScript (ts)  ·  ${count === undefined ? '3 due + 3 new' : `${count} suggestions`}  ·  ${items.length} problems` : 'Practice collections'),
     screen === 'home' ? h(Box, {flexDirection: 'column', marginTop: 1},
       h(Text, null, 'Press Enter or type /practice to choose a collection.'),
       h(Text, null, 'Type /practice dsa 15 to open a list directly.'),
@@ -188,7 +189,7 @@ function App({initialCollection, initialCount}) {
     message ? h(Text, {color: 'yellow'}, message) : null,
     output ? h(Box, {flexDirection: 'column', borderStyle: 'round', borderColor: testResult.code === 0 ? 'green' : 'red', paddingX: 1},
       h(Text, {bold: true}, `Test output · exit ${testResult.code}`), h(Text, null, output)) : null,
-    h(Text, {dimColor: true}, mode === 'command' ? `Command: ${draft}` : mode === 'search' ? `Search: ${draft}` : screen === 'practice' ? '↑↓ navigate · Enter start · t test active · s search · c clear · / command · Esc collections · q quit' : '↑↓ navigate · Enter select · / command · q quit'));
+    h(Text, {dimColor: true}, mode === 'command' ? `Command: ${draft}` : mode === 'search' ? `Search: ${draft}` : screen === 'practice' ? '↑↓ navigate · Enter start · t test active · x clear output · s search · c clear search · / command · Esc collections · q quit' : '↑↓ navigate · Enter select · / command · q quit'));
 }
 
 export function startTui(options = {}) {

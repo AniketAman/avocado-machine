@@ -1,0 +1,17 @@
+{
+  "id": 39,
+  "title": "Implement Trie Prefix Tree",
+  "variants": {
+    "ts": {
+      "runner": "typescript-vitest",
+      "sm2": {
+        "repetitions": 1,
+        "easeFactor": 2.36,
+        "intervalDays": 1,
+        "dueDate": "2026-09-28",
+        "lastGrade": 3,
+        "lastReviewedAt": "2026-09-27"
+      }
+    }
+  }
+}

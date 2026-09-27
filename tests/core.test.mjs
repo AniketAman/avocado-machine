@@ -8,8 +8,8 @@ import {newMetadata, nextSm2, searchGroups, startProblemFiles, suggestions} from
 
 function item(id, dueDate = null) {
   const metadata = newMetadata(id, `Problem ${id}`);
-  if (dueDate) metadata.sm2 = {...metadata.sm2, lastGrade: 5, dueDate};
-  return metadata;
+  if (dueDate) metadata.variants.ts.sm2 = {...metadata.variants.ts.sm2, lastGrade: 5, dueDate};
+  return {...metadata, sm2: metadata.variants.ts.sm2};
 }
 
 test('suggestions include overdue reviews oldest first and fill unused slots', () => {
@@ -23,7 +23,7 @@ test('suggestions include overdue reviews oldest first and fill unused slots', (
 });
 
 test('SM-2 advances on grades and restarts weak recall tomorrow', () => {
-  const initial = newMetadata(1, 'One').sm2;
+  const initial = newMetadata(1, 'One').variants.ts.sm2;
   const first = nextSm2(initial, 5, '2026-09-26');
   assert.equal(first.intervalDays, 1);
   assert.equal(first.dueDate, '2026-09-27');
@@ -57,13 +57,14 @@ test('search includes matches outside suggestions in current collection', () => 
 test('starting an attempt archives the previous solution and resets from template', () => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'avocado-attempt-'));
   try {
-    fs.writeFileSync(path.join(dir, 'solution.template.ts'), 'export const answer = 0;\n');
-    fs.writeFileSync(path.join(dir, 'solution.ts'), 'export const answer = 42;\n');
-    const result = startProblemFiles({dir}, new Date('2026-09-26T12:00:00.000Z'));
+    fs.mkdirSync(path.join(dir, 'ts'));
+    fs.writeFileSync(path.join(dir, 'ts', 'solution.template.ts'), 'export const answer = 0;\n');
+    fs.writeFileSync(path.join(dir, 'ts', 'solution.ts'), 'export const answer = 42;\n');
+    const result = startProblemFiles({dir, variants: {ts: {sm2: {lastGrade: 5}}}}, new Date('2026-09-26T12:00:00.000Z'));
     assert.equal(fs.readFileSync(result.archive, 'utf8'), 'export const answer = 42;\n');
     assert.equal(fs.readFileSync(result.solution, 'utf8'), 'export const answer = 0;\n');
-    const again = startProblemFiles({dir}, new Date('2026-09-26T12:00:00.000Z'));
-    assert.notEqual(result.archive, again.archive);
+    const again = startProblemFiles({dir, variants: {ts: {sm2: {lastGrade: 5}}}}, new Date('2026-09-26T12:00:00.000Z'));
+    assert.equal(again.archive, null);
   } finally {
     fs.rmSync(dir, {recursive: true, force: true});
   }
@@ -72,11 +73,12 @@ test('starting an attempt archives the previous solution and resets from templat
 test('starting a new scaffold skips a redundant archive of its untouched starter', () => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'avocado-new-'));
   try {
-    fs.writeFileSync(path.join(dir, 'solution.template.ts'), '// Start here\n');
-    fs.writeFileSync(path.join(dir, 'solution.ts'), '// Start here\n');
-    const result = startProblemFiles({dir, sm2: {lastGrade: null}});
+    fs.mkdirSync(path.join(dir, 'ts'));
+    fs.writeFileSync(path.join(dir, 'ts', 'solution.template.ts'), '// Start here\n');
+    fs.writeFileSync(path.join(dir, 'ts', 'solution.ts'), '// Start here\n');
+    const result = startProblemFiles({dir, variants: {ts: {sm2: {lastGrade: null}}}});
     assert.equal(result.archive, null);
-    assert.equal(fs.existsSync(path.join(dir, 'attempts')), false);
+    assert.equal(fs.existsSync(path.join(dir, 'ts', 'attempts')), false);
   } finally {
     fs.rmSync(dir, {recursive: true, force: true});
   }
@@ -94,8 +96,8 @@ test('scaffolding assigns a permanent number and writes a pending test', async (
     const second = isolated.addProblem('javascript', 'Merge Sort');
     assert.equal(first.id, 1);
     assert.equal(second.id, 2);
-    assert.equal(fs.readFileSync(path.join(first.dir, 'solution.ts'), 'utf8'), fs.readFileSync(path.join(first.dir, 'solution.template.ts'), 'utf8'));
-    assert.match(fs.readFileSync(path.join(first.dir, 'solution.test.ts'), 'utf8'), /test.todo/);
+    assert.equal(fs.readFileSync(path.join(first.dir, 'ts', 'solution.ts'), 'utf8'), fs.readFileSync(path.join(first.dir, 'ts', 'solution.template.ts'), 'utf8'));
+    assert.match(fs.readFileSync(path.join(first.dir, 'ts', 'solution.test.ts'), 'utf8'), /test.todo/);
     assert.equal(isolated.problems('javascript').length, 2);
   } finally {
     fs.rmSync(dir, {recursive: true, force: true});

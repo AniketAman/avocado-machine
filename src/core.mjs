@@ -6,6 +6,15 @@ import {spawn} from 'node:child_process';
 export const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 export const collectionsRoot = path.join(root, 'collections');
 export const runner = 'typescript-vitest';
+export const defaultLanguage = 'ts';
+const runners = {ts: {name: runner, extension: 'ts', testFile: 'solution.test.ts'}};
+
+function languageFiles(problem, language = defaultLanguage) {
+  const config = runners[language];
+  if (!config || !problem.variants?.[language]) throw new Error(`Unsupported language for #${problem.id}: ${language}`);
+  const dir = path.join(problem.dir, language);
+  return {dir, source: path.join(dir, `solution.template.${config.extension}`), target: path.join(dir, `solution.${config.extension}`), test: path.join(dir, config.testFile), extension: config.extension};
+}
 
 function assertName(value, label) {
   if (!/^[a-z][a-z0-9-]*$/.test(value)) throw new Error(`Invalid ${label}: ${value}`);
@@ -25,7 +34,7 @@ export function addDays(day, count) {
 }
 
 export function newMetadata(id, title) {
-  return {id, title, runner, sm2: {repetitions: 0, easeFactor: 2.5, intervalDays: 0, dueDate: null, lastGrade: null, lastReviewedAt: null}};
+  return {id, title, variants: {[defaultLanguage]: {runner, sm2: {repetitions: 0, easeFactor: 2.5, intervalDays: 0, dueDate: null, lastGrade: null, lastReviewedAt: null}}}};
 }
 
 export function collections() {
@@ -45,8 +54,12 @@ export function problems(collection) {
       const dir = path.join(base, entry.name);
       const metadata = JSON.parse(fs.readFileSync(path.join(dir, 'metadata.json'), 'utf8'));
       if (!Number.isSafeInteger(metadata.id) || metadata.id < 1 || !entry.name.startsWith(`${metadata.id}-`)) throw new Error(`Invalid problem number in ${dir}`);
-      if (metadata.runner !== runner) throw new Error(`Unsupported runner in ${dir}: ${metadata.runner}`);
-      return {...metadata, dir, collection};
+      if (!metadata.variants || !Object.keys(metadata.variants).length) throw new Error(`Missing language variants in ${dir}`);
+      if (!metadata.variants[defaultLanguage]) throw new Error(`Missing default language in ${dir}: ${defaultLanguage}`);
+      for (const [language, variant] of Object.entries(metadata.variants)) {
+        if (runners[language]?.name !== variant.runner || !variant.sm2) throw new Error(`Unsupported runner in ${dir}: ${variant.runner}`);
+      }
+      return {...metadata, dir, collection, language: defaultLanguage, runner: metadata.variants[defaultLanguage]?.runner, sm2: metadata.variants[defaultLanguage]?.sm2};
     }).sort((a, b) => a.id - b.id);
 }
 
@@ -97,27 +110,26 @@ export function searchGroups(items, selected, query, today = localDate()) {
 }
 
 export function testCommand(problem) {
-  return `npx vitest run ${path.relative(root, path.join(problem.dir, 'solution.test.ts'))}`;
+  return `npx vitest run ${path.relative(root, languageFiles(problem, problem.language).test)}`;
 }
 
-export function startProblem(collection, id, now = new Date()) {
+export function startProblem(collection, id, now = new Date(), language = defaultLanguage) {
   const problem = problemById(collection, id);
-  return startProblemFiles(problem, now);
+  return startProblemFiles(problem, now, language);
 }
 
-export function startProblemFiles(problem, now = new Date()) {
-  const source = path.join(problem.dir, 'solution.template.ts');
-  const target = path.join(problem.dir, 'solution.ts');
+export function startProblemFiles(problem, now = new Date(), language = defaultLanguage) {
+  const {dir, source, target, extension} = languageFiles(problem, language);
   if (!fs.existsSync(source)) throw new Error(`Missing starter template: ${source}`);
   let archive = null;
-  const shouldArchive = fs.existsSync(target) && (problem.sm2?.lastGrade !== null || !fs.readFileSync(target).equals(fs.readFileSync(source)));
+  const shouldArchive = fs.existsSync(target) && !fs.readFileSync(target).equals(fs.readFileSync(source));
   if (shouldArchive) {
-    const archiveDir = path.join(problem.dir, 'attempts');
+    const archiveDir = path.join(dir, 'attempts');
     fs.mkdirSync(archiveDir, {recursive: true});
     const timestamp = now.toISOString().replaceAll(':', '-').replaceAll('.', '-');
-    let candidate = path.join(archiveDir, `${timestamp}.ts`);
+    let candidate = path.join(archiveDir, `${timestamp}.${extension}`);
     let suffix = 2;
-    while (fs.existsSync(candidate)) candidate = path.join(archiveDir, `${timestamp}-${suffix++}.ts`);
+    while (fs.existsSync(candidate)) candidate = path.join(archiveDir, `${timestamp}-${suffix++}.${extension}`);
     fs.copyFileSync(target, candidate, fs.constants.COPYFILE_EXCL);
     archive = candidate;
   }
@@ -134,16 +146,17 @@ export function nextSm2(state, grade, today = localDate()) {
   return {repetitions, easeFactor, intervalDays, dueDate: addDays(today, intervalDays), lastGrade: grade, lastReviewedAt: today};
 }
 
-export function gradeProblem(collection, id, grade, today = localDate()) {
+export function gradeProblem(collection, id, grade, today = localDate(), language = defaultLanguage) {
   const problem = problemById(collection, id);
+  if (!problem.variants[language]) throw new Error(`Unsupported language for #${id}: ${language}`);
   const value = Number(grade);
-  const sm2 = nextSm2(problem.sm2, value, today);
-  const metadata = {id: problem.id, title: problem.title, runner: problem.runner, sm2};
+  const sm2 = nextSm2(problem.variants[language].sm2, value, today);
+  const metadata = {id: problem.id, title: problem.title, variants: {...problem.variants, [language]: {...problem.variants[language], sm2}}};
   const target = path.join(problem.dir, 'metadata.json');
   const temp = path.join(problem.dir, `.metadata-${process.pid}-${Date.now()}.tmp`);
   fs.writeFileSync(temp, JSON.stringify(metadata, null, 2) + '\n');
   fs.renameSync(temp, target);
-  return {...problem, sm2};
+  return {...problem, language, sm2};
 }
 
 export function addProblem(collection, title) {
@@ -159,16 +172,18 @@ export function addProblem(collection, title) {
   const dir = path.join(base, `${id}-${slug}`);
   fs.mkdirSync(dir);
   fs.writeFileSync(path.join(dir, 'description.md'), `# ${cleanTitle}\n\nDescribe the problem, examples, and constraints here.\n`);
-  fs.writeFileSync(path.join(dir, 'solution.test.ts'), `import {test} from 'vitest';\n\ntest.todo(${JSON.stringify(cleanTitle)});\n`);
-  fs.writeFileSync(path.join(dir, 'solution.template.ts'), '// Start your solution here.\n');
-  fs.writeFileSync(path.join(dir, 'solution.ts'), '// Start your solution here.\n');
+  const languageDir = path.join(dir, defaultLanguage);
+  fs.mkdirSync(languageDir);
+  fs.writeFileSync(path.join(languageDir, 'solution.test.ts'), `import {test} from 'vitest';\n\ntest.todo(${JSON.stringify(cleanTitle)});\n`);
+  fs.writeFileSync(path.join(languageDir, 'solution.template.ts'), '// Start your solution here.\n');
+  fs.writeFileSync(path.join(languageDir, 'solution.ts'), '// Start your solution here.\n');
   fs.writeFileSync(path.join(dir, 'metadata.json'), JSON.stringify(newMetadata(id, cleanTitle), null, 2) + '\n');
   return {id, title: cleanTitle, dir, collection};
 }
 
 export function runTests(problem) {
   const bin = path.join(root, 'node_modules', 'vitest', 'vitest.mjs');
-  const file = path.relative(root, path.join(problem.dir, 'solution.test.ts'));
+  const file = path.relative(root, languageFiles(problem, problem.language).test);
   return new Promise((resolve, reject) => {
     const child = spawn(process.execPath, [bin, 'run', file], {cwd: root, env: {...process.env, FORCE_COLOR: '0'}});
     let output = '';
