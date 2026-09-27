@@ -109,7 +109,6 @@ test("Apple", () => {
   expect(trie.startsWith("apple")).toBe(true);
 });
 
-// ["Trie", "insert", "dog", "search", "dog", "search", "do", "startsWith", "do", "insert", "do", "search", "do"]
 test("Another one", () => {
   const trie = new PrefixTree()
   trie.insert("dog")
