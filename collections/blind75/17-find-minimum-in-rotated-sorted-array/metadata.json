@@ -1,6 +1,6 @@
 {
   "id": 17,
-  "title": "Find Minimum In Rotated Sorted Array",
+  "title": "Find Minimum In Rotated Sorted Array (Medium)",
   "variants": {
     "ts": {
       "runner": "typescript-vitest",

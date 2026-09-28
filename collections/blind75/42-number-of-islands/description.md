@@ -1,4 +1,4 @@
-# Number of Islands
+# Number of Islands (Medium)
 
 **Topic:** Graphs · **Difficulty:** Medium
 

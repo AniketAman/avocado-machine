@@ -1,4 +1,4 @@
-# 3Sum
+# 3Sum (Medium)
 
 **Topic:** Two Pointers · **Difficulty:** Medium
 

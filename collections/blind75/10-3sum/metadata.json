@@ -1,6 +1,6 @@
 {
   "id": 10,
-  "title": "3Sum",
+  "title": "3Sum (Medium)",
   "variants": {
     "ts": {
       "runner": "typescript-vitest",

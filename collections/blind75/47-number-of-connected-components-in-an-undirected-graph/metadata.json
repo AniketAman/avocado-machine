@@ -1,6 +1,6 @@
 {
   "id": 47,
-  "title": "Number of Connected Components In An Undirected Graph",
+  "title": "Number of Connected Components In An Undirected Graph (Medium)",
   "variants": {
     "ts": {
       "runner": "typescript-vitest",

@@ -1,6 +1,6 @@
 {
   "id": 51,
-  "title": "House Robber II",
+  "title": "House Robber II (Medium)",
   "variants": {
     "ts": {
       "runner": "typescript-vitest",

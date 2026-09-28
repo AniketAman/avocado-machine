@@ -1,4 +1,4 @@
-# Counting Bits
+# Counting Bits (Easy)
 
 **Topic:** Bit Manipulation · **Difficulty:** Easy
 

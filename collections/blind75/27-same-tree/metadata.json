@@ -1,6 +1,6 @@
 {
   "id": 27,
-  "title": "Same Tree",
+  "title": "Same Tree (Easy)",
   "variants": {
     "ts": {
       "runner": "typescript-vitest",

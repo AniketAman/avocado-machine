@@ -1,4 +1,4 @@
-# Non Overlapping Intervals
+# Non Overlapping Intervals (Medium)
 
 **Topic:** Intervals · **Difficulty:** Medium
 

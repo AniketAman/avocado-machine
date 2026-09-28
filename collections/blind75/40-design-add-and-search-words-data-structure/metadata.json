@@ -1,6 +1,6 @@
 {
   "id": 40,
-  "title": "Design Add And Search Words Data Structure",
+  "title": "Design Add And Search Words Data Structure (Medium)",
   "variants": {
     "ts": {
       "runner": "typescript-vitest",

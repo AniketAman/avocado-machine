@@ -1,4 +1,4 @@
-# Longest Palindromic Substring
+# Longest Palindromic Substring (Medium)
 
 **Topic:** 1-D Dynamic Programming · **Difficulty:** Medium
 

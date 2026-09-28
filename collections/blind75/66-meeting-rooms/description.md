@@ -1,4 +1,4 @@
-# Meeting Rooms
+# Meeting Rooms (Easy)
 
 **Topic:** Intervals · **Difficulty:** Easy
 

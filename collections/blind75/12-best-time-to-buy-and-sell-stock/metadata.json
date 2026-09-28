@@ -1,6 +1,6 @@
 {
   "id": 12,
-  "title": "Best Time to Buy And Sell Stock",
+  "title": "Best Time to Buy And Sell Stock (Easy)",
   "variants": {
     "ts": {
       "runner": "typescript-vitest",

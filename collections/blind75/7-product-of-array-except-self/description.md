@@ -1,4 +1,4 @@
-# Product of Array Except Self
+# Product of Array Except Self (Medium)
 
 **Topic:** Arrays & Hashing · **Difficulty:** Medium
 

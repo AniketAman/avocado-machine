@@ -1,6 +1,6 @@
 {
   "id": 15,
-  "title": "Minimum Window Substring",
+  "title": "Minimum Window Substring (Hard)",
   "variants": {
     "ts": {
       "runner": "typescript-vitest",

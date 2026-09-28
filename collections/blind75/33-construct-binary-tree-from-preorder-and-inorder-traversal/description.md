@@ -1,4 +1,4 @@
-# Construct Binary Tree From Preorder And Inorder Traversal
+# Construct Binary Tree From Preorder And Inorder Traversal (Medium)
 
 **Topic:** Trees · **Difficulty:** Medium
 

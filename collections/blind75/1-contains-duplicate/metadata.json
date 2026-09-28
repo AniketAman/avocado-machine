@@ -1,6 +1,6 @@
 {
   "id": 1,
-  "title": "Contains Duplicate",
+  "title": "Contains Duplicate (Easy)",
   "variants": {
     "ts": {
       "runner": "typescript-vitest",

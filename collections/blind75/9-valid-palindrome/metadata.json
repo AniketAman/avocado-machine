@@ -1,6 +1,6 @@
 {
   "id": 9,
-  "title": "Valid Palindrome",
+  "title": "Valid Palindrome (Easy)",
   "variants": {
     "ts": {
       "runner": "typescript-vitest",

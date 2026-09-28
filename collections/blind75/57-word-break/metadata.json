@@ -1,6 +1,6 @@
 {
   "id": 57,
-  "title": "Word Break",
+  "title": "Word Break (Medium)",
   "variants": {
     "ts": {
       "runner": "typescript-vitest",

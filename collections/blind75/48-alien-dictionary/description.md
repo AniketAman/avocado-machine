@@ -1,4 +1,4 @@
-# Alien Dictionary
+# Alien Dictionary (Hard)
 
 **Topic:** Advanced Graphs · **Difficulty:** Hard
 

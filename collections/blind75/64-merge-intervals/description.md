@@ -1,4 +1,4 @@
-# Merge Intervals
+# Merge Intervals (Medium)
 
 **Topic:** Intervals · **Difficulty:** Medium
 

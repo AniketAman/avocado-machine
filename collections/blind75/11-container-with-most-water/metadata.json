@@ -1,6 +1,6 @@
 {
   "id": 11,
-  "title": "Container With Most Water",
+  "title": "Container With Most Water (Medium)",
   "variants": {
     "ts": {
       "runner": "typescript-vitest",

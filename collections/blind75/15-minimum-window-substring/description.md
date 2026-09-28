@@ -1,4 +1,4 @@
-# Minimum Window Substring
+# Minimum Window Substring (Hard)
 
 **Topic:** Sliding Window · **Difficulty:** Hard
 

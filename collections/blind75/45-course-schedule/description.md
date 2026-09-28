@@ -1,4 +1,4 @@
-# Course Schedule
+# Course Schedule (Medium)
 
 **Topic:** Graphs · **Difficulty:** Medium
 

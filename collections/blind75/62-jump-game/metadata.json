@@ -1,6 +1,6 @@
 {
   "id": 62,
-  "title": "Jump Game",
+  "title": "Jump Game (Medium)",
   "variants": {
     "ts": {
       "runner": "typescript-vitest",

@@ -1,6 +1,6 @@
 {
   "id": 32,
-  "title": "Kth Smallest Element In a Bst",
+  "title": "Kth Smallest Element In a Bst (Medium)",
   "variants": {
     "ts": {
       "runner": "typescript-vitest",

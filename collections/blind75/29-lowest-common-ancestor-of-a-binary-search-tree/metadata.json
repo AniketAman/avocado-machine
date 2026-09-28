@@ -1,6 +1,6 @@
 {
   "id": 29,
-  "title": "Lowest Common Ancestor of a Binary Search Tree",
+  "title": "Lowest Common Ancestor of a Binary Search Tree (Medium)",
   "variants": {
     "ts": {
       "runner": "typescript-vitest",

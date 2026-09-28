@@ -1,4 +1,4 @@
-# Longest Consecutive Sequence
+# Longest Consecutive Sequence (Medium)
 
 **Topic:** Arrays & Hashing · **Difficulty:** Medium
 

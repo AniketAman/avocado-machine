@@ -1,6 +1,6 @@
 {
   "id": 21,
-  "title": "Linked List Cycle",
+  "title": "Linked List Cycle (Easy)",
   "variants": {
     "ts": {
       "runner": "typescript-vitest",

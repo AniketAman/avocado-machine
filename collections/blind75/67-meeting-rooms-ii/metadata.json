@@ -1,6 +1,6 @@
 {
   "id": 67,
-  "title": "Meeting Rooms II",
+  "title": "Meeting Rooms II (Medium)",
   "variants": {
     "ts": {
       "runner": "typescript-vitest",

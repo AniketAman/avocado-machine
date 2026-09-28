@@ -1,4 +1,4 @@
-# Valid Anagram
+# Valid Anagram (Easy)
 
 **Topic:** Arrays & Hashing · **Difficulty:** Easy
 

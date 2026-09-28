@@ -1,6 +1,6 @@
 {
   "id": 70,
-  "title": "Set Matrix Zeroes",
+  "title": "Set Matrix Zeroes (Medium)",
   "variants": {
     "ts": {
       "runner": "typescript-vitest",

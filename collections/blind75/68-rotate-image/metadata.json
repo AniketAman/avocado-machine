@@ -1,6 +1,6 @@
 {
   "id": 68,
-  "title": "Rotate Image",
+  "title": "Rotate Image (Medium)",
   "variants": {
     "ts": {
       "runner": "typescript-vitest",

@@ -1,4 +1,4 @@
-# Word Search
+# Word Search (Medium)
 
 **Topic:** Backtracking · **Difficulty:** Medium
 

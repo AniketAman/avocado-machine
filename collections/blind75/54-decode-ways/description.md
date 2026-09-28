@@ -1,4 +1,4 @@
-# Decode Ways
+# Decode Ways (Medium)
 
 **Topic:** 1-D Dynamic Programming · **Difficulty:** Medium
 

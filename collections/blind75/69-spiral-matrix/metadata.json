@@ -1,6 +1,6 @@
 {
   "id": 69,
-  "title": "Spiral Matrix",
+  "title": "Spiral Matrix (Medium)",
   "variants": {
     "ts": {
       "runner": "typescript-vitest",

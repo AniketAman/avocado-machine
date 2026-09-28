@@ -1,4 +1,4 @@
-# Word Search II
+# Word Search II (Hard)
 
 **Topic:** Tries · **Difficulty:** Hard
 

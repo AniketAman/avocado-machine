@@ -1,4 +1,4 @@
-# Same Tree
+# Same Tree (Easy)
 
 **Topic:** Trees · **Difficulty:** Easy
 

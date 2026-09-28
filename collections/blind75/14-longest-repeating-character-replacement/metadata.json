@@ -1,6 +1,6 @@
 {
   "id": 14,
-  "title": "Longest Repeating Character Replacement",
+  "title": "Longest Repeating Character Replacement (Medium)",
   "variants": {
     "ts": {
       "runner": "typescript-vitest",

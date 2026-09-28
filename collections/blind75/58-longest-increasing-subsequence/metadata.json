@@ -1,6 +1,6 @@
 {
   "id": 58,
-  "title": "Longest Increasing Subsequence",
+  "title": "Longest Increasing Subsequence (Medium)",
   "variants": {
     "ts": {
       "runner": "typescript-vitest",

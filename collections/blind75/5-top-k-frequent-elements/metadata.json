@@ -1,6 +1,6 @@
 {
   "id": 5,
-  "title": "Top K Frequent Elements",
+  "title": "Top K Frequent Elements (Medium)",
   "variants": {
     "ts": {
       "runner": "typescript-vitest",

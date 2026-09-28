@@ -1,6 +1,6 @@
 {
   "id": 18,
-  "title": "Search In Rotated Sorted Array",
+  "title": "Search In Rotated Sorted Array (Medium)",
   "variants": {
     "ts": {
       "runner": "typescript-vitest",

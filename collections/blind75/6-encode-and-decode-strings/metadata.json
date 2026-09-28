@@ -1,6 +1,6 @@
 {
   "id": 6,
-  "title": "Encode and Decode Strings",
+  "title": "Encode and Decode Strings (Medium)",
   "variants": {
     "ts": {
       "runner": "typescript-vitest",

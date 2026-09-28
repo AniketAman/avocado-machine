@@ -1,4 +1,4 @@
-# Linked List Cycle
+# Linked List Cycle (Easy)
 
 **Topic:** Linked List · **Difficulty:** Easy
 

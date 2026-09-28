@@ -1,6 +1,6 @@
 {
   "id": 66,
-  "title": "Meeting Rooms",
+  "title": "Meeting Rooms (Easy)",
   "variants": {
     "ts": {
       "runner": "typescript-vitest",

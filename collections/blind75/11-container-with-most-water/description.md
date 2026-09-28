@@ -1,4 +1,4 @@
-# Container With Most Water
+# Container With Most Water (Medium)
 
 **Topic:** Two Pointers · **Difficulty:** Medium
 

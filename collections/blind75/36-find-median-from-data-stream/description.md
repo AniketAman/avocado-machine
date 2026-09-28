@@ -1,4 +1,4 @@
-# Find Median From Data Stream
+# Find Median From Data Stream (Hard)
 
 **Topic:** Heap / Priority Queue · **Difficulty:** Hard
 

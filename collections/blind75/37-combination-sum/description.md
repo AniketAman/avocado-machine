@@ -1,4 +1,4 @@
-# Combination Sum
+# Combination Sum (Medium)
 
 **Topic:** Backtracking · **Difficulty:** Medium
 

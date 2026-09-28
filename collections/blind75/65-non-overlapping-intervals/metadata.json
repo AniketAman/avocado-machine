@@ -1,6 +1,6 @@
 {
   "id": 65,
-  "title": "Non Overlapping Intervals",
+  "title": "Non Overlapping Intervals (Medium)",
   "variants": {
     "ts": {
       "runner": "typescript-vitest",

@@ -1,6 +1,6 @@
 {
   "id": 2,
-  "title": "Valid Anagram",
+  "title": "Valid Anagram (Easy)",
   "variants": {
     "ts": {
       "runner": "typescript-vitest",

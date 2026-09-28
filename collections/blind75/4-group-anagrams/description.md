@@ -1,4 +1,4 @@
-# Group Anagrams
+# Group Anagrams (Medium)
 
 **Topic:** Arrays & Hashing · **Difficulty:** Medium
 

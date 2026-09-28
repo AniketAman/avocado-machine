@@ -1,6 +1,6 @@
 {
   "id": 74,
-  "title": "Missing Number",
+  "title": "Missing Number (Easy)",
   "variants": {
     "ts": {
       "runner": "typescript-vitest",

@@ -1,6 +1,6 @@
 {
   "id": 13,
-  "title": "Longest Substring Without Repeating Characters",
+  "title": "Longest Substring Without Repeating Characters (Medium)",
   "variants": {
     "ts": {
       "runner": "typescript-vitest",

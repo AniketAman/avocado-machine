@@ -1,4 +1,4 @@
-# Missing Number
+# Missing Number (Easy)
 
 **Topic:** Bit Manipulation · **Difficulty:** Easy
 

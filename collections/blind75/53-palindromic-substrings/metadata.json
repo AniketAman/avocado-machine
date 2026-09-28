@@ -1,6 +1,6 @@
 {
   "id": 53,
-  "title": "Palindromic Substrings",
+  "title": "Palindromic Substrings (Medium)",
   "variants": {
     "ts": {
       "runner": "typescript-vitest",

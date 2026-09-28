@@ -1,6 +1,6 @@
 {
   "id": 61,
-  "title": "Maximum Subarray",
+  "title": "Maximum Subarray (Medium)",
   "variants": {
     "ts": {
       "runner": "typescript-vitest",

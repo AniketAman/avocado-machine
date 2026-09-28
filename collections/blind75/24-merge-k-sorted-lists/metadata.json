@@ -1,6 +1,6 @@
 {
   "id": 24,
-  "title": "Merge K Sorted Lists",
+  "title": "Merge K Sorted Lists (Hard)",
   "variants": {
     "ts": {
       "runner": "typescript-vitest",

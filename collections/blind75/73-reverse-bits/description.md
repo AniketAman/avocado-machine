@@ -1,4 +1,4 @@
-# Reverse Bits
+# Reverse Bits (Easy)
 
 **Topic:** Bit Manipulation · **Difficulty:** Easy
 

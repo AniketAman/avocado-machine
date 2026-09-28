@@ -1,6 +1,6 @@
 {
   "id": 52,
-  "title": "Longest Palindromic Substring",
+  "title": "Longest Palindromic Substring (Medium)",
   "variants": {
     "ts": {
       "runner": "typescript-vitest",

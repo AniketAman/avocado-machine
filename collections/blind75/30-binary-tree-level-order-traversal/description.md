@@ -1,4 +1,4 @@
-# Binary Tree Level Order Traversal
+# Binary Tree Level Order Traversal (Medium)
 
 **Topic:** Trees · **Difficulty:** Medium
 

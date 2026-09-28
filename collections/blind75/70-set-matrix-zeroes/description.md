@@ -1,4 +1,4 @@
-# Set Matrix Zeroes
+# Set Matrix Zeroes (Medium)
 
 **Topic:** Math & Geometry · **Difficulty:** Medium
 

@@ -1,4 +1,4 @@
-# Palindromic Substrings
+# Palindromic Substrings (Medium)
 
 **Topic:** 1-D Dynamic Programming · **Difficulty:** Medium
 

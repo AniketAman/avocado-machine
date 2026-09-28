@@ -1,6 +1,6 @@
 {
   "id": 46,
-  "title": "Graph Valid Tree",
+  "title": "Graph Valid Tree (Medium)",
   "variants": {
     "ts": {
       "runner": "typescript-vitest",

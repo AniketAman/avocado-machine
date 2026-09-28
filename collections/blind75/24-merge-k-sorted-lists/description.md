@@ -1,4 +1,4 @@
-# Merge K Sorted Lists
+# Merge K Sorted Lists (Hard)
 
 **Topic:** Linked List · **Difficulty:** Hard
 

@@ -1,4 +1,4 @@
-# Implement Trie Prefix Tree
+# Implement Trie Prefix Tree (Medium)
 
 **Topic:** Tries · **Difficulty:** Medium
 

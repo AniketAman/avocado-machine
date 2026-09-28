@@ -1,4 +1,4 @@
-# Sum of Two Integers
+# Sum of Two Integers (Medium)
 
 **Topic:** Bit Manipulation · **Difficulty:** Medium
 

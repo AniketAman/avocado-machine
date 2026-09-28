@@ -1,4 +1,4 @@
-# Longest Increasing Subsequence
+# Longest Increasing Subsequence (Medium)
 
 **Topic:** 1-D Dynamic Programming · **Difficulty:** Medium
 

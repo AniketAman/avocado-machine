@@ -1,6 +1,6 @@
 {
   "id": 48,
-  "title": "Alien Dictionary",
+  "title": "Alien Dictionary (Hard)",
   "variants": {
     "ts": {
       "runner": "typescript-vitest",

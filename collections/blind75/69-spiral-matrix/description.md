@@ -1,4 +1,4 @@
-# Spiral Matrix
+# Spiral Matrix (Medium)
 
 **Topic:** Math & Geometry · **Difficulty:** Medium
 

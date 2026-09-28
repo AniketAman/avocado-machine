@@ -1,6 +1,6 @@
 {
   "id": 28,
-  "title": "Subtree of Another Tree",
+  "title": "Subtree of Another Tree (Easy)",
   "variants": {
     "ts": {
       "runner": "typescript-vitest",

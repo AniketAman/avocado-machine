@@ -1,6 +1,6 @@
 {
   "id": 36,
-  "title": "Find Median From Data Stream",
+  "title": "Find Median From Data Stream (Hard)",
   "variants": {
     "ts": {
       "runner": "typescript-vitest",

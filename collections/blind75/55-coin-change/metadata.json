@@ -1,6 +1,6 @@
 {
   "id": 55,
-  "title": "Coin Change",
+  "title": "Coin Change (Medium)",
   "variants": {
     "ts": {
       "runner": "typescript-vitest",

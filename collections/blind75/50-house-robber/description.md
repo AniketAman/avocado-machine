@@ -1,4 +1,4 @@
-# House Robber
+# House Robber (Medium)
 
 **Topic:** 1-D Dynamic Programming · **Difficulty:** Medium
 

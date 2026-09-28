@@ -1,6 +1,6 @@
 {
   "id": 26,
-  "title": "Maximum Depth of Binary Tree",
+  "title": "Maximum Depth of Binary Tree (Easy)",
   "variants": {
     "ts": {
       "runner": "typescript-vitest",

@@ -1,6 +1,6 @@
 {
   "id": 49,
-  "title": "Climbing Stairs",
+  "title": "Climbing Stairs (Easy)",
   "variants": {
     "ts": {
       "runner": "typescript-vitest",

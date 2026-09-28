@@ -1,6 +1,6 @@
 {
   "id": 30,
-  "title": "Binary Tree Level Order Traversal",
+  "title": "Binary Tree Level Order Traversal (Medium)",
   "variants": {
     "ts": {
       "runner": "typescript-vitest",

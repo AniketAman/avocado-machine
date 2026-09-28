@@ -1,4 +1,4 @@
-# Top K Frequent Elements
+# Top K Frequent Elements (Medium)
 
 **Topic:** Arrays & Hashing · **Difficulty:** Medium
 

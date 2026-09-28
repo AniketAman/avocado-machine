@@ -1,6 +1,6 @@
 {
   "id": 33,
-  "title": "Construct Binary Tree From Preorder And Inorder Traversal",
+  "title": "Construct Binary Tree From Preorder And Inorder Traversal (Medium)",
   "variants": {
     "ts": {
       "runner": "typescript-vitest",

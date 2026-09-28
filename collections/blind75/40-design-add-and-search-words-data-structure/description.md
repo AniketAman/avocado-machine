@@ -1,4 +1,4 @@
-# Design Add And Search Words Data Structure
+# Design Add And Search Words Data Structure (Medium)
 
 **Topic:** Tries · **Difficulty:** Medium
 

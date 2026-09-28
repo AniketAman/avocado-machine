@@ -1,6 +1,6 @@
 {
   "id": 39,
-  "title": "Implement Trie Prefix Tree",
+  "title": "Implement Trie Prefix Tree (Medium)",
   "variants": {
     "ts": {
       "runner": "typescript-vitest",

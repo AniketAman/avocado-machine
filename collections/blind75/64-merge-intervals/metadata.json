@@ -1,6 +1,6 @@
 {
   "id": 64,
-  "title": "Merge Intervals",
+  "title": "Merge Intervals (Medium)",
   "variants": {
     "ts": {
       "runner": "typescript-vitest",

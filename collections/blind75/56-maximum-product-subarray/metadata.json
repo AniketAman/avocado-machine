@@ -1,6 +1,6 @@
 {
   "id": 56,
-  "title": "Maximum Product Subarray",
+  "title": "Maximum Product Subarray (Medium)",
   "variants": {
     "ts": {
       "runner": "typescript-vitest",

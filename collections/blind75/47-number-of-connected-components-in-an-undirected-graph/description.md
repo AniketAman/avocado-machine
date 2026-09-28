@@ -1,4 +1,4 @@
-# Number of Connected Components In An Undirected Graph
+# Number of Connected Components In An Undirected Graph (Medium)
 
 **Topic:** Graphs · **Difficulty:** Medium
 

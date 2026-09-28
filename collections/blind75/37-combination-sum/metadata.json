@@ -1,6 +1,6 @@
 {
   "id": 37,
-  "title": "Combination Sum",
+  "title": "Combination Sum (Medium)",
   "variants": {
     "ts": {
       "runner": "typescript-vitest",

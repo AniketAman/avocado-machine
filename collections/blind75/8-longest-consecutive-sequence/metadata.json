@@ -1,6 +1,6 @@
 {
   "id": 8,
-  "title": "Longest Consecutive Sequence",
+  "title": "Longest Consecutive Sequence (Medium)",
   "variants": {
     "ts": {
       "runner": "typescript-vitest",

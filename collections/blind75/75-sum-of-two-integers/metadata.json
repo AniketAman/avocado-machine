@@ -1,6 +1,6 @@
 {
   "id": 75,
-  "title": "Sum of Two Integers",
+  "title": "Sum of Two Integers (Medium)",
   "variants": {
     "ts": {
       "runner": "typescript-vitest",

@@ -1,6 +1,6 @@
 {
   "id": 44,
-  "title": "Pacific Atlantic Water Flow",
+  "title": "Pacific Atlantic Water Flow (Medium)",
   "variants": {
     "ts": {
       "runner": "typescript-vitest",

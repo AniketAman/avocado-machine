@@ -1,6 +1,6 @@
 {
   "id": 60,
-  "title": "Longest Common Subsequence",
+  "title": "Longest Common Subsequence (Medium)",
   "variants": {
     "ts": {
       "runner": "typescript-vitest",

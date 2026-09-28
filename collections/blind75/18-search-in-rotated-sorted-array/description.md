@@ -1,4 +1,4 @@
-# Search In Rotated Sorted Array
+# Search In Rotated Sorted Array (Medium)
 
 **Topic:** Binary Search · **Difficulty:** Medium
 

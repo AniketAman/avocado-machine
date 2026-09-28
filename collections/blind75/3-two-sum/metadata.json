@@ -1,6 +1,6 @@
 {
   "id": 3,
-  "title": "Two Sum",
+  "title": "Two Sum (Easy)",
   "variants": {
     "ts": {
       "runner": "typescript-vitest",

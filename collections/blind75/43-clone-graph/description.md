@@ -1,4 +1,4 @@
-# Clone Graph
+# Clone Graph (Medium)
 
 **Topic:** Graphs · **Difficulty:** Medium
 

@@ -1,4 +1,4 @@
-# Best Time to Buy And Sell Stock
+# Best Time to Buy And Sell Stock (Easy)
 
 **Topic:** Sliding Window · **Difficulty:** Easy
 

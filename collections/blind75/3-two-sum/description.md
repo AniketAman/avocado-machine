@@ -1,4 +1,4 @@
-# Two Sum
+# Two Sum (Easy)
 
 **Topic:** Arrays & Hashing · **Difficulty:** Easy
 

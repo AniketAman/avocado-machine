@@ -1,6 +1,6 @@
 {
   "id": 22,
-  "title": "Reorder List",
+  "title": "Reorder List (Medium)",
   "variants": {
     "ts": {
       "runner": "typescript-vitest",

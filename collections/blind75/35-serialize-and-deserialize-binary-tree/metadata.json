@@ -1,6 +1,6 @@
 {
   "id": 35,
-  "title": "Serialize And Deserialize Binary Tree",
+  "title": "Serialize And Deserialize Binary Tree (Hard)",
   "variants": {
     "ts": {
       "runner": "typescript-vitest",

@@ -1,6 +1,6 @@
 {
   "id": 20,
-  "title": "Merge Two Sorted Lists",
+  "title": "Merge Two Sorted Lists (Easy)",
   "variants": {
     "ts": {
       "runner": "typescript-vitest",

@@ -1,4 +1,4 @@
-# Valid Palindrome
+# Valid Palindrome (Easy)
 
 **Topic:** Two Pointers · **Difficulty:** Easy
 

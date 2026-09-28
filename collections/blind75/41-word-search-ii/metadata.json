@@ -1,6 +1,6 @@
 {
   "id": 41,
-  "title": "Word Search II",
+  "title": "Word Search II (Hard)",
   "variants": {
     "ts": {
       "runner": "typescript-vitest",

@@ -1,6 +1,6 @@
 {
   "id": 54,
-  "title": "Decode Ways",
+  "title": "Decode Ways (Medium)",
   "variants": {
     "ts": {
       "runner": "typescript-vitest",

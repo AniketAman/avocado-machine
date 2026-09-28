@@ -1,4 +1,4 @@
-# Longest Substring Without Repeating Characters
+# Longest Substring Without Repeating Characters (Medium)
 
 **Topic:** Sliding Window · **Difficulty:** Medium
 

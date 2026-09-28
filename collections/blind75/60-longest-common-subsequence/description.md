@@ -1,4 +1,4 @@
-# Longest Common Subsequence
+# Longest Common Subsequence (Medium)
 
 **Topic:** 2-D Dynamic Programming · **Difficulty:** Medium
 

@@ -1,4 +1,4 @@
-# Subtree of Another Tree
+# Subtree of Another Tree (Easy)
 
 **Topic:** Trees · **Difficulty:** Easy
 

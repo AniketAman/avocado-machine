@@ -1,4 +1,4 @@
-# Kth Smallest Element In a Bst
+# Kth Smallest Element In a Bst (Medium)
 
 **Topic:** Trees · **Difficulty:** Medium
 

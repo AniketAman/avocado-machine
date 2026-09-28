@@ -1,4 +1,4 @@
-# Insert Interval
+# Insert Interval (Medium)
 
 **Topic:** Intervals · **Difficulty:** Medium
 

@@ -1,4 +1,4 @@
-# Reorder List
+# Reorder List (Medium)
 
 **Topic:** Linked List · **Difficulty:** Medium
 

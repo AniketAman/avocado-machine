@@ -1,4 +1,4 @@
-# Unique Paths
+# Unique Paths (Medium)
 
 **Topic:** 2-D Dynamic Programming · **Difficulty:** Medium
 

@@ -1,6 +1,6 @@
 {
   "id": 43,
-  "title": "Clone Graph",
+  "title": "Clone Graph (Medium)",
   "variants": {
     "ts": {
       "runner": "typescript-vitest",

@@ -1,4 +1,4 @@
-# Word Break
+# Word Break (Medium)
 
 **Topic:** 1-D Dynamic Programming · **Difficulty:** Medium
 

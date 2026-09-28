@@ -1,6 +1,6 @@
 {
   "id": 63,
-  "title": "Insert Interval",
+  "title": "Insert Interval (Medium)",
   "variants": {
     "ts": {
       "runner": "typescript-vitest",

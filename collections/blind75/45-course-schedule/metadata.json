@@ -1,6 +1,6 @@
 {
   "id": 45,
-  "title": "Course Schedule",
+  "title": "Course Schedule (Medium)",
   "variants": {
     "ts": {
       "runner": "typescript-vitest",

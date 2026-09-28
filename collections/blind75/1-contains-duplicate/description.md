@@ -1,4 +1,4 @@
-# Contains Duplicate
+# Contains Duplicate (Easy)
 
 **Topic:** Arrays & Hashing · **Difficulty:** Easy
 

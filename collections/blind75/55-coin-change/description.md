@@ -1,4 +1,4 @@
-# Coin Change
+# Coin Change (Medium)
 
 **Topic:** 1-D Dynamic Programming · **Difficulty:** Medium
 

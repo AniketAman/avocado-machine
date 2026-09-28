@@ -1,4 +1,4 @@
-# Rotate Image
+# Rotate Image (Medium)
 
 **Topic:** Math & Geometry · **Difficulty:** Medium
 

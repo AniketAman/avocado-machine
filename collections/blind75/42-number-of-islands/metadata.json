@@ -1,6 +1,6 @@
 {
   "id": 42,
-  "title": "Number of Islands",
+  "title": "Number of Islands (Medium)",
   "variants": {
     "ts": {
       "runner": "typescript-vitest",

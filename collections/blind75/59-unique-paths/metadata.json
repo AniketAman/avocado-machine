@@ -1,6 +1,6 @@
 {
   "id": 59,
-  "title": "Unique Paths",
+  "title": "Unique Paths (Medium)",
   "variants": {
     "ts": {
       "runner": "typescript-vitest",

@@ -1,6 +1,6 @@
 {
   "id": 72,
-  "title": "Counting Bits",
+  "title": "Counting Bits (Easy)",
   "variants": {
     "ts": {
       "runner": "typescript-vitest",

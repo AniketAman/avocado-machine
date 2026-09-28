@@ -1,4 +1,4 @@
-# Longest Repeating Character Replacement
+# Longest Repeating Character Replacement (Medium)
 
 **Topic:** Sliding Window · **Difficulty:** Medium
 

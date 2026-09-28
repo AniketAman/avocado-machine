@@ -1,6 +1,6 @@
 {
   "id": 19,
-  "title": "Reverse Linked List",
+  "title": "Reverse Linked List (Easy)",
   "variants": {
     "ts": {
       "runner": "typescript-vitest",

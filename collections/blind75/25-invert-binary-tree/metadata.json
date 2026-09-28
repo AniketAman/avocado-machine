@@ -1,6 +1,6 @@
 {
   "id": 25,
-  "title": "Invert Binary Tree",
+  "title": "Invert Binary Tree (Easy)",
   "variants": {
     "ts": {
       "runner": "typescript-vitest",

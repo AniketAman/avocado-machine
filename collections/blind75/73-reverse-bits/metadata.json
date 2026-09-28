@@ -1,6 +1,6 @@
 {
   "id": 73,
-  "title": "Reverse Bits",
+  "title": "Reverse Bits (Easy)",
   "variants": {
     "ts": {
       "runner": "typescript-vitest",

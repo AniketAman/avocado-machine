@@ -1,6 +1,6 @@
 {
   "id": 16,
-  "title": "Valid Parentheses",
+  "title": "Valid Parentheses (Easy)",
   "variants": {
     "ts": {
       "runner": "typescript-vitest",

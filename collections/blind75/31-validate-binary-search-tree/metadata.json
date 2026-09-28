@@ -1,6 +1,6 @@
 {
   "id": 31,
-  "title": "Validate Binary Search Tree",
+  "title": "Validate Binary Search Tree (Medium)",
   "variants": {
     "ts": {
       "runner": "typescript-vitest",

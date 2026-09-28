@@ -1,4 +1,4 @@
-# Pacific Atlantic Water Flow
+# Pacific Atlantic Water Flow (Medium)
 
 **Topic:** Graphs · **Difficulty:** Medium
 

@@ -1,4 +1,4 @@
-# Climbing Stairs
+# Climbing Stairs (Easy)
 
 **Topic:** 1-D Dynamic Programming · **Difficulty:** Easy
 

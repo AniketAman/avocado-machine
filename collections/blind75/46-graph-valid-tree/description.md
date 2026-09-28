@@ -1,4 +1,4 @@
-# Graph Valid Tree
+# Graph Valid Tree (Medium)
 
 **Topic:** Graphs · **Difficulty:** Medium
 

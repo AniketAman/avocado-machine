@@ -1,6 +1,6 @@
 {
   "id": 71,
-  "title": "Number of 1 Bits",
+  "title": "Number of 1 Bits (Easy)",
   "variants": {
     "ts": {
       "runner": "typescript-vitest",
