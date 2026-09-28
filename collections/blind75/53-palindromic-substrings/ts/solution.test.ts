@@ -6,124 +6,25 @@ const cases = [
     "args": [
       "a"
     ],
-    "expected": 1
+    "expected": 1,
+    "name": "baseline: [\"a\"]"
   },
   {
+    "name": "even and odd palindromes overlap",
     "args": [
-      "aa"
-    ],
-    "expected": 3
-  },
-  {
-    "args": [
-      "aab"
-    ],
-    "expected": 4
-  },
-  {
-    "args": [
-      "aabc"
-    ],
-    "expected": 5
-  },
-  {
-    "args": [
-      "aabca"
+      "aaa"
     ],
     "expected": 6
   },
   {
+    "name": "no palindrome longer than one character",
     "args": [
-      "aabcaa"
+      "abc"
     ],
-    "expected": 8
-  },
-  {
-    "args": [
-      "aabcaaa"
-    ],
-    "expected": 11
-  },
-  {
-    "args": [
-      "aabcaaab"
-    ],
-    "expected": 12
-  },
-  {
-    "args": [
-      "aabcaaabc"
-    ],
-    "expected": 13
-  },
-  {
-    "args": [
-      "aabcaaabca"
-    ],
-    "expected": 14
-  },
-  {
-    "args": [
-      "aabcaaabcaa"
-    ],
-    "expected": 16
-  },
-  {
-    "args": [
-      "aabcaaabcaaa"
-    ],
-    "expected": 19
-  },
-  {
-    "args": [
-      "aabcaaabcaaab"
-    ],
-    "expected": 20
-  },
-  {
-    "args": [
-      "aabcaaabcaaabc"
-    ],
-    "expected": 21
-  },
-  {
-    "args": [
-      "aabcaaabcaaabca"
-    ],
-    "expected": 22
-  },
-  {
-    "args": [
-      "aabcaaabcaaabcaa"
-    ],
-    "expected": 24
-  },
-  {
-    "args": [
-      "aabcaaabcaaabcaaa"
-    ],
-    "expected": 27
-  },
-  {
-    "args": [
-      "aabcaaabcaaabcaaab"
-    ],
-    "expected": 28
-  },
-  {
-    "args": [
-      "aabcaaabcaaabcaaabc"
-    ],
-    "expected": 29
-  },
-  {
-    "args": [
-      "aabcaaabcaaabcaaabca"
-    ],
-    "expected": 30
+    "expected": 3
   }
 ];
 
-test.each(cases)('case %#', ({args, expected}) => {
+test.each(cases)('$name', ({args, expected}) => {
     expect(countSubstrings(...(args as any))).toEqual(expected);
 });

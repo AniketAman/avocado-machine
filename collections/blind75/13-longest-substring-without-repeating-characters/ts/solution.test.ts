@@ -6,124 +6,25 @@ const cases = [
     "args": [
       ""
     ],
-    "expected": 0
+    "expected": 0,
+    "name": "baseline: [\"\"]"
   },
   {
+    "name": "repeat at both sides of window",
     "args": [
-      "bc1"
+      "abba"
     ],
-    "expected": 3
+    "expected": 2
   },
   {
+    "name": "all unique characters",
     "args": [
-      "cde2"
-    ],
-    "expected": 4
-  },
-  {
-    "args": [
-      "deab3"
-    ],
-    "expected": 5
-  },
-  {
-    "args": [
-      "abcde4"
-    ],
-    "expected": 6
-  },
-  {
-    "args": [
-      "bcde5"
-    ],
-    "expected": 5
-  },
-  {
-    "args": [
-      "cdeabcd6"
-    ],
-    "expected": 6
-  },
-  {
-    "args": [
-      "deabcdea7"
-    ],
-    "expected": 6
-  },
-  {
-    "args": [
-      "abcdeabcd8"
-    ],
-    "expected": 6
-  },
-  {
-    "args": [
-      "bcdeabcdea9"
-    ],
-    "expected": 6
-  },
-  {
-    "args": [
-      "cde10"
-    ],
-    "expected": 5
-  },
-  {
-    "args": [
-      "deabcde11"
-    ],
-    "expected": 6
-  },
-  {
-    "args": [
-      "abcdeabcdeabc12"
-    ],
-    "expected": 7
-  },
-  {
-    "args": [
-      "bcdeabcdeabcde13"
-    ],
-    "expected": 7
-  },
-  {
-    "args": [
-      "cdeabcdeabcdeab14"
-    ],
-    "expected": 7
-  },
-  {
-    "args": [
-      "de15"
+      "abcd"
     ],
     "expected": 4
-  },
-  {
-    "args": [
-      "abcdeabcde16"
-    ],
-    "expected": 7
-  },
-  {
-    "args": [
-      "bcdeabcdeabcde17"
-    ],
-    "expected": 7
-  },
-  {
-    "args": [
-      "cdeabcdeabcdeabcde18"
-    ],
-    "expected": 7
-  },
-  {
-    "args": [
-      "deabcdeabcdeabcdeabc19"
-    ],
-    "expected": 7
   }
 ];
 
-test.each(cases)('case %#', ({args, expected}) => {
+test.each(cases)('$name', ({args, expected}) => {
     expect(lengthOfLongestSubstring(...(args as any))).toEqual(expected);
 });

@@ -20,504 +20,55 @@ const cases = [
         "",
         ""
       ]
-    ]
+    ],
+    "name": "baseline: [[\"a\",\"\",\"\",\"\"]]"
   },
   {
+    "name": "same letters with multiplicity form one group",
     "args": [
       [
-        "a",
-        "b",
-        "ab",
-        "ba",
-        "z"
+        "abb",
+        "bab",
+        "bba",
+        "ab"
       ]
     ],
     "expected": [
       [
-        "a"
+        "abb",
+        "bab",
+        "bba"
       ],
       [
-        "b"
-      ],
-      [
-        "ab",
-        "ba"
-      ],
-      [
-        "z"
+        "ab"
       ]
     ]
   },
   {
+    "name": "empty strings group separately from single letters",
     "args": [
       [
-        "a",
-        "b",
-        "c",
-        "abab",
-        "baba",
-        "zz"
-      ]
-    ],
-    "expected": [
-      [
-        "a"
-      ],
-      [
-        "b"
-      ],
-      [
-        "c"
-      ],
-      [
-        "abab",
-        "baba"
-      ],
-      [
-        "zz"
-      ]
-    ]
-  },
-  {
-    "args": [
-      [
-        "a",
-        "ababab",
-        "bababa",
-        "zzz"
-      ]
-    ],
-    "expected": [
-      [
-        "a"
-      ],
-      [
-        "ababab",
-        "bababa"
-      ],
-      [
-        "zzz"
-      ]
-    ]
-  },
-  {
-    "args": [
-      [
-        "a",
-        "b",
         "",
+        "a",
         "",
-        "zzzz"
+        "b"
       ]
     ],
     "expected": [
-      [
-        "a"
-      ],
-      [
-        "b"
-      ],
       [
         "",
         ""
       ],
       [
-        "zzzz"
-      ]
-    ]
-  },
-  {
-    "args": [
-      [
-        "a",
-        "b",
-        "c",
-        "ab",
-        "ba",
-        ""
-      ]
-    ],
-    "expected": [
-      [
         "a"
       ],
       [
         "b"
-      ],
-      [
-        "c"
-      ],
-      [
-        "ab",
-        "ba"
-      ],
-      [
-        ""
-      ]
-    ]
-  },
-  {
-    "args": [
-      [
-        "a",
-        "abab",
-        "baba",
-        "z"
-      ]
-    ],
-    "expected": [
-      [
-        "a"
-      ],
-      [
-        "abab",
-        "baba"
-      ],
-      [
-        "z"
-      ]
-    ]
-  },
-  {
-    "args": [
-      [
-        "a",
-        "b",
-        "ababab",
-        "bababa",
-        "zz"
-      ]
-    ],
-    "expected": [
-      [
-        "a"
-      ],
-      [
-        "b"
-      ],
-      [
-        "ababab",
-        "bababa"
-      ],
-      [
-        "zz"
-      ]
-    ]
-  },
-  {
-    "args": [
-      [
-        "a",
-        "b",
-        "c",
-        "",
-        "",
-        "zzz"
-      ]
-    ],
-    "expected": [
-      [
-        "a"
-      ],
-      [
-        "b"
-      ],
-      [
-        "c"
-      ],
-      [
-        "",
-        ""
-      ],
-      [
-        "zzz"
-      ]
-    ]
-  },
-  {
-    "args": [
-      [
-        "a",
-        "ab",
-        "ba",
-        "zzzz"
-      ]
-    ],
-    "expected": [
-      [
-        "a"
-      ],
-      [
-        "ab",
-        "ba"
-      ],
-      [
-        "zzzz"
-      ]
-    ]
-  },
-  {
-    "args": [
-      [
-        "a",
-        "b",
-        "abab",
-        "baba",
-        ""
-      ]
-    ],
-    "expected": [
-      [
-        "a"
-      ],
-      [
-        "b"
-      ],
-      [
-        "abab",
-        "baba"
-      ],
-      [
-        ""
-      ]
-    ]
-  },
-  {
-    "args": [
-      [
-        "a",
-        "b",
-        "c",
-        "ababab",
-        "bababa",
-        "z"
-      ]
-    ],
-    "expected": [
-      [
-        "a"
-      ],
-      [
-        "b"
-      ],
-      [
-        "c"
-      ],
-      [
-        "ababab",
-        "bababa"
-      ],
-      [
-        "z"
-      ]
-    ]
-  },
-  {
-    "args": [
-      [
-        "a",
-        "",
-        "",
-        "zz"
-      ]
-    ],
-    "expected": [
-      [
-        "a"
-      ],
-      [
-        "",
-        ""
-      ],
-      [
-        "zz"
-      ]
-    ]
-  },
-  {
-    "args": [
-      [
-        "a",
-        "b",
-        "ab",
-        "ba",
-        "zzz"
-      ]
-    ],
-    "expected": [
-      [
-        "a"
-      ],
-      [
-        "b"
-      ],
-      [
-        "ab",
-        "ba"
-      ],
-      [
-        "zzz"
-      ]
-    ]
-  },
-  {
-    "args": [
-      [
-        "a",
-        "b",
-        "c",
-        "abab",
-        "baba",
-        "zzzz"
-      ]
-    ],
-    "expected": [
-      [
-        "a"
-      ],
-      [
-        "b"
-      ],
-      [
-        "c"
-      ],
-      [
-        "abab",
-        "baba"
-      ],
-      [
-        "zzzz"
-      ]
-    ]
-  },
-  {
-    "args": [
-      [
-        "a",
-        "ababab",
-        "bababa",
-        ""
-      ]
-    ],
-    "expected": [
-      [
-        "a"
-      ],
-      [
-        "ababab",
-        "bababa"
-      ],
-      [
-        ""
-      ]
-    ]
-  },
-  {
-    "args": [
-      [
-        "a",
-        "b",
-        "",
-        "",
-        "z"
-      ]
-    ],
-    "expected": [
-      [
-        "a"
-      ],
-      [
-        "b"
-      ],
-      [
-        "",
-        ""
-      ],
-      [
-        "z"
-      ]
-    ]
-  },
-  {
-    "args": [
-      [
-        "a",
-        "b",
-        "c",
-        "ab",
-        "ba",
-        "zz"
-      ]
-    ],
-    "expected": [
-      [
-        "a"
-      ],
-      [
-        "b"
-      ],
-      [
-        "c"
-      ],
-      [
-        "ab",
-        "ba"
-      ],
-      [
-        "zz"
-      ]
-    ]
-  },
-  {
-    "args": [
-      [
-        "a",
-        "abab",
-        "baba",
-        "zzz"
-      ]
-    ],
-    "expected": [
-      [
-        "a"
-      ],
-      [
-        "abab",
-        "baba"
-      ],
-      [
-        "zzz"
-      ]
-    ]
-  },
-  {
-    "args": [
-      [
-        "a",
-        "b",
-        "ababab",
-        "bababa",
-        "zzzz"
-      ]
-    ],
-    "expected": [
-      [
-        "a"
-      ],
-      [
-        "b"
-      ],
-      [
-        "ababab",
-        "bababa"
-      ],
-      [
-        "zzzz"
       ]
     ]
   }
 ];
 
-test.each(cases)('case %#', ({args, expected}) => {
+test.each(cases)('$name', ({args, expected}) => {
     expect(normalize(groupAnagrams(...(args as any)) as any)).toEqual(normalize(expected as any));
 });

@@ -15,6 +15,7 @@ export class WordDictionary {
       curr.children[cIdx] =
         curr.children[cIdx] || new TrieNode(i === word.length - 1);
       curr = curr.children[cIdx];
+      curr.endOfWord = curr.endOfWord || i === word.length - 1;
     }
   }
   search(pattern: string): boolean {
@@ -33,7 +34,8 @@ export class WordDictionary {
 
       const cIdx = c.charCodeAt(0) - this.a;
       if (curr.children[cIdx] == null) return false;
-      if (i === pattern.length - 1 && curr.children[cIdx].endOfWord) return true;
+      if (i === pattern.length - 1 && curr.children[cIdx].endOfWord)
+        return true;
       curr = curr.children[cIdx];
     }
     return false;

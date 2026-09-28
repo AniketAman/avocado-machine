@@ -6,345 +6,51 @@ const cases = [
     "args": [
       []
     ],
-    "expected": []
+    "expected": [],
+    "name": "baseline: [[]]"
   },
   {
+    "name": "empty fields and delimiter-like text survive round trip",
     "args": [
       [
+        "",
+        "a#b",
+        "12#",
+        "\n",
         ""
       ]
     ],
     "expected": [
+      "",
+      "a#b",
+      "12#",
+      "\n",
       ""
     ]
   },
   {
+    "name": "length prefix grows to two digits",
     "args": [
       [
-        "item2",
-        "",
-        "##",
-        "2#x",
-        "a\nb"
+        "abcdefghij",
+        "x"
       ]
     ],
     "expected": [
-      "item2",
-      "",
-      "##",
-      "2#x",
-      "a\nb"
-    ]
-  },
-  {
-    "args": [
-      [
-        "item3",
-        "",
-        "###",
-        "3#x",
-        "a\nb"
-      ]
-    ],
-    "expected": [
-      "item3",
-      "",
-      "###",
-      "3#x",
-      "a\nb"
-    ]
-  },
-  {
-    "args": [
-      [
-        "item4",
-        "",
-        "####",
-        "4#x",
-        "a\nb"
-      ]
-    ],
-    "expected": [
-      "item4",
-      "",
-      "####",
-      "4#x",
-      "a\nb"
-    ]
-  },
-  {
-    "args": [
-      [
-        "item5",
-        "",
-        "#####",
-        "5#x",
-        "a\nb"
-      ]
-    ],
-    "expected": [
-      "item5",
-      "",
-      "#####",
-      "5#x",
-      "a\nb"
-    ]
-  },
-  {
-    "args": [
-      [
-        "item6",
-        "",
-        "######",
-        "6#x",
-        "a\nb"
-      ]
-    ],
-    "expected": [
-      "item6",
-      "",
-      "######",
-      "6#x",
-      "a\nb"
-    ]
-  },
-  {
-    "args": [
-      [
-        "item7",
-        "",
-        "#######",
-        "7#x",
-        "a\nb"
-      ]
-    ],
-    "expected": [
-      "item7",
-      "",
-      "#######",
-      "7#x",
-      "a\nb"
-    ]
-  },
-  {
-    "args": [
-      [
-        "item8",
-        "",
-        "########",
-        "8#x",
-        "a\nb"
-      ]
-    ],
-    "expected": [
-      "item8",
-      "",
-      "########",
-      "8#x",
-      "a\nb"
-    ]
-  },
-  {
-    "args": [
-      [
-        "item9",
-        "",
-        "#########",
-        "9#x",
-        "a\nb"
-      ]
-    ],
-    "expected": [
-      "item9",
-      "",
-      "#########",
-      "9#x",
-      "a\nb"
-    ]
-  },
-  {
-    "args": [
-      [
-        "item10",
-        "",
-        "##########",
-        "10#x",
-        "a\nb"
-      ]
-    ],
-    "expected": [
-      "item10",
-      "",
-      "##########",
-      "10#x",
-      "a\nb"
-    ]
-  },
-  {
-    "args": [
-      [
-        "item11",
-        "",
-        "###########",
-        "11#x",
-        "a\nb"
-      ]
-    ],
-    "expected": [
-      "item11",
-      "",
-      "###########",
-      "11#x",
-      "a\nb"
-    ]
-  },
-  {
-    "args": [
-      [
-        "item12",
-        "",
-        "############",
-        "12#x",
-        "a\nb"
-      ]
-    ],
-    "expected": [
-      "item12",
-      "",
-      "############",
-      "12#x",
-      "a\nb"
-    ]
-  },
-  {
-    "args": [
-      [
-        "item13",
-        "",
-        "#############",
-        "13#x",
-        "a\nb"
-      ]
-    ],
-    "expected": [
-      "item13",
-      "",
-      "#############",
-      "13#x",
-      "a\nb"
-    ]
-  },
-  {
-    "args": [
-      [
-        "item14",
-        "",
-        "##############",
-        "14#x",
-        "a\nb"
-      ]
-    ],
-    "expected": [
-      "item14",
-      "",
-      "##############",
-      "14#x",
-      "a\nb"
-    ]
-  },
-  {
-    "args": [
-      [
-        "item15",
-        "",
-        "###############",
-        "15#x",
-        "a\nb"
-      ]
-    ],
-    "expected": [
-      "item15",
-      "",
-      "###############",
-      "15#x",
-      "a\nb"
-    ]
-  },
-  {
-    "args": [
-      [
-        "item16",
-        "",
-        "################",
-        "16#x",
-        "a\nb"
-      ]
-    ],
-    "expected": [
-      "item16",
-      "",
-      "################",
-      "16#x",
-      "a\nb"
-    ]
-  },
-  {
-    "args": [
-      [
-        "item17",
-        "",
-        "#################",
-        "17#x",
-        "a\nb"
-      ]
-    ],
-    "expected": [
-      "item17",
-      "",
-      "#################",
-      "17#x",
-      "a\nb"
-    ]
-  },
-  {
-    "args": [
-      [
-        "item18",
-        "",
-        "##################",
-        "18#x",
-        "a\nb"
-      ]
-    ],
-    "expected": [
-      "item18",
-      "",
-      "##################",
-      "18#x",
-      "a\nb"
-    ]
-  },
-  {
-    "args": [
-      [
-        "item19",
-        "",
-        "###################",
-        "19#x",
-        "a\nb"
-      ]
-    ],
-    "expected": [
-      "item19",
-      "",
-      "###################",
-      "19#x",
-      "a\nb"
+      "abcdefghij",
+      "x"
     ]
   }
 ];
 
-test.each(cases)('case %#', ({args, expected}) => {
+test.each(cases)('$name', ({args, expected}) => {
     const codec = new Codec();
     expect(codec.decode(codec.encode(args[0]))).toEqual(expected);
+});
+
+test('encoded data can be decoded by a different Codec instance', () => {
+    const input = ['', 'a#b', '12#', '\n', ''];
+    const encoded = new Codec().encode(input);
+    expect(new Codec().decode(encoded)).toEqual(input);
+    expect(new Codec().encode([])).not.toBe(new Codec().encode(['']));
 });

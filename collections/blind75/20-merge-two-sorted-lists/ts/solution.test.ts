@@ -8,14 +8,15 @@ const cases = [
       [],
       []
     ],
-    "expected": []
+    "expected": [],
+    "name": "baseline: [[],[]]"
   },
   {
+    "name": "one list empty",
     "args": [
+      [],
       [
-        1
-      ],
-      [
+        1,
         2
       ]
     ],
@@ -25,457 +26,45 @@ const cases = [
     ]
   },
   {
+    "name": "equal values from both lists",
     "args": [
       [
+        1,
         2,
-        4
+        2
       ],
       [
+        1,
+        2,
         3
       ]
     ],
     "expected": [
+      1,
+      1,
       2,
-      3,
-      4
-    ]
-  },
-  {
-    "args": [
-      [
-        3,
-        5,
-        7
-      ],
-      [
-        4,
-        6
-      ]
-    ],
-    "expected": [
-      3,
-      4,
-      5,
-      6,
-      7
-    ]
-  },
-  {
-    "args": [
-      [
-        4,
-        6,
-        8,
-        10
-      ],
-      [
-        5,
-        7
-      ]
-    ],
-    "expected": [
-      4,
-      5,
-      6,
-      7,
-      8,
-      10
-    ]
-  },
-  {
-    "args": [
-      [
-        5,
-        7,
-        9,
-        11,
-        13
-      ],
-      [
-        6,
-        8
-      ]
-    ],
-    "expected": [
-      5,
-      6,
-      7,
-      8,
-      9,
-      11,
-      13
-    ]
-  },
-  {
-    "args": [
-      [
-        6,
-        8,
-        10,
-        12,
-        14,
-        16
-      ],
-      [
-        7,
-        9,
-        11
-      ]
-    ],
-    "expected": [
-      6,
-      7,
-      8,
-      9,
-      10,
-      11,
-      12,
-      14,
-      16
-    ]
-  },
-  {
-    "args": [
-      [
-        7,
-        9,
-        11,
-        13,
-        15,
-        17,
-        19
-      ],
-      [
-        8,
-        10,
-        12
-      ]
-    ],
-    "expected": [
-      7,
-      8,
-      9,
-      10,
-      11,
-      12,
-      13,
-      15,
-      17,
-      19
-    ]
-  },
-  {
-    "args": [
-      [],
-      [
-        9,
-        11,
-        13
-      ]
-    ],
-    "expected": [
-      9,
-      11,
-      13
-    ]
-  },
-  {
-    "args": [
-      [
-        9
-      ],
-      [
-        10,
-        12,
-        14,
-        16
-      ]
-    ],
-    "expected": [
-      9,
-      10,
-      12,
-      14,
-      16
-    ]
-  },
-  {
-    "args": [
-      [
-        10,
-        12
-      ],
-      [
-        11,
-        13,
-        15,
-        17
-      ]
-    ],
-    "expected": [
-      10,
-      11,
-      12,
-      13,
-      15,
-      17
-    ]
-  },
-  {
-    "args": [
-      [
-        11,
-        13,
-        15
-      ],
-      [
-        12,
-        14,
-        16,
-        18
-      ]
-    ],
-    "expected": [
-      11,
-      12,
-      13,
-      14,
-      15,
-      16,
-      18
-    ]
-  },
-  {
-    "args": [
-      [
-        12,
-        14,
-        16,
-        18
-      ],
-      [
-        13,
-        15,
-        17,
-        19,
-        21
-      ]
-    ],
-    "expected": [
-      12,
-      13,
-      14,
-      15,
-      16,
-      17,
-      18,
-      19,
-      21
-    ]
-  },
-  {
-    "args": [
-      [
-        13,
-        15,
-        17,
-        19,
-        21
-      ],
-      [
-        14,
-        16,
-        18,
-        20,
-        22
-      ]
-    ],
-    "expected": [
-      13,
-      14,
-      15,
-      16,
-      17,
-      18,
-      19,
-      20,
-      21,
-      22
-    ]
-  },
-  {
-    "args": [
-      [
-        14,
-        16,
-        18,
-        20,
-        22,
-        24
-      ],
-      [
-        15,
-        17,
-        19,
-        21,
-        23
-      ]
-    ],
-    "expected": [
-      14,
-      15,
-      16,
-      17,
-      18,
-      19,
-      20,
-      21,
-      22,
-      23,
-      24
-    ]
-  },
-  {
-    "args": [
-      [
-        15,
-        17,
-        19,
-        21,
-        23,
-        25,
-        27
-      ],
-      [
-        16,
-        18,
-        20,
-        22,
-        24,
-        26
-      ]
-    ],
-    "expected": [
-      15,
-      16,
-      17,
-      18,
-      19,
-      20,
-      21,
-      22,
-      23,
-      24,
-      25,
-      26,
-      27
-    ]
-  },
-  {
-    "args": [
-      [],
-      [
-        17,
-        19,
-        21,
-        23,
-        25,
-        27
-      ]
-    ],
-    "expected": [
-      17,
-      19,
-      21,
-      23,
-      25,
-      27
-    ]
-  },
-  {
-    "args": [
-      [
-        17
-      ],
-      [
-        18,
-        20,
-        22,
-        24,
-        26,
-        28
-      ]
-    ],
-    "expected": [
-      17,
-      18,
-      20,
-      22,
-      24,
-      26,
-      28
-    ]
-  },
-  {
-    "args": [
-      [
-        18,
-        20
-      ],
-      [
-        19,
-        21,
-        23,
-        25,
-        27,
-        29,
-        31
-      ]
-    ],
-    "expected": [
-      18,
-      19,
-      20,
-      21,
-      23,
-      25,
-      27,
-      29,
-      31
-    ]
-  },
-  {
-    "args": [
-      [
-        19,
-        21,
-        23
-      ],
-      [
-        20,
-        22,
-        24,
-        26,
-        28,
-        30,
-        32
-      ]
-    ],
-    "expected": [
-      19,
-      20,
-      21,
-      22,
-      23,
-      24,
-      26,
-      28,
-      30,
-      32
+      2,
+      2,
+      3
     ]
   }
 ];
 
-test.each(cases)('case %#', ({args, expected}) => {
+test.each(cases)('$name', ({args, expected}) => {
     expect(listToArray(mergeTwoLists(listFrom(args[0]), listFrom(args[1])))).toEqual(expected);
+});
+
+test('merging reuses every input node exactly once', () => {
+    const left = listFrom([1, 3]);
+    const right = listFrom([2, 4]);
+    const inputNodes = new Set<any>();
+    for (let node = left; node; node = node.next) inputNodes.add(node);
+    for (let node = right; node; node = node.next) inputNodes.add(node);
+
+    const merged = mergeTwoLists(left, right);
+    expect(listToArray(merged)).toEqual([1, 2, 3, 4]);
+    const outputNodes = new Set<any>();
+    for (let node = merged; node; node = node.next) outputNodes.add(node);
+    expect(outputNodes.size).toBe(inputNodes.size);
+    for (const node of outputNodes) expect(inputNodes.has(node)).toBe(true);
 });

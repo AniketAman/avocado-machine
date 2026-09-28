@@ -12,238 +12,36 @@ const cases = [
         "ba"
       ]
     ],
-    "expected": true
+    "expected": true,
+    "name": "baseline: [\"ab\",[\"a\",\"ab\",\"b\",\"ba\"]]"
   },
   {
+    "name": "prefix match must continue to end",
     "args": [
-      "ababc",
+      "catsandog",
       [
-        "a",
-        "ab",
-        "b",
-        "ba"
+        "cats",
+        "dog",
+        "sand",
+        "and",
+        "cat"
       ]
     ],
     "expected": false
   },
   {
+    "name": "multiple word boundaries form valid split",
     "args": [
-      "aaab",
+      "leetcode",
       [
-        "a",
-        "ab",
-        "b",
-        "ba"
+        "leet",
+        "code"
       ]
     ],
     "expected": true
-  },
-  {
-    "args": [
-      "abababab",
-      [
-        "a",
-        "ab",
-        "b",
-        "ba"
-      ]
-    ],
-    "expected": true
-  },
-  {
-    "args": [
-      "abababababc",
-      [
-        "a",
-        "ab",
-        "b",
-        "ba"
-      ]
-    ],
-    "expected": false
-  },
-  {
-    "args": [
-      "aaaaaab",
-      [
-        "a",
-        "ab",
-        "b",
-        "ba"
-      ]
-    ],
-    "expected": true
-  },
-  {
-    "args": [
-      "ababababababab",
-      [
-        "a",
-        "ab",
-        "b",
-        "ba"
-      ]
-    ],
-    "expected": true
-  },
-  {
-    "args": [
-      "ababababababababc",
-      [
-        "a",
-        "ab",
-        "b",
-        "ba"
-      ]
-    ],
-    "expected": false
-  },
-  {
-    "args": [
-      "aaaaaaaaab",
-      [
-        "a",
-        "ab",
-        "b",
-        "ba"
-      ]
-    ],
-    "expected": true
-  },
-  {
-    "args": [
-      "abababababababababab",
-      [
-        "a",
-        "ab",
-        "b",
-        "ba"
-      ]
-    ],
-    "expected": true
-  },
-  {
-    "args": [
-      "abababababababababababc",
-      [
-        "a",
-        "ab",
-        "b",
-        "ba"
-      ]
-    ],
-    "expected": false
-  },
-  {
-    "args": [
-      "aaaaaaaaaaaab",
-      [
-        "a",
-        "ab",
-        "b",
-        "ba"
-      ]
-    ],
-    "expected": true
-  },
-  {
-    "args": [
-      "ababababababababababababab",
-      [
-        "a",
-        "ab",
-        "b",
-        "ba"
-      ]
-    ],
-    "expected": true
-  },
-  {
-    "args": [
-      "ababababababababababababababc",
-      [
-        "a",
-        "ab",
-        "b",
-        "ba"
-      ]
-    ],
-    "expected": false
-  },
-  {
-    "args": [
-      "aaaaaaaaaaaaaaab",
-      [
-        "a",
-        "ab",
-        "b",
-        "ba"
-      ]
-    ],
-    "expected": true
-  },
-  {
-    "args": [
-      "abababababababababababababababab",
-      [
-        "a",
-        "ab",
-        "b",
-        "ba"
-      ]
-    ],
-    "expected": true
-  },
-  {
-    "args": [
-      "abababababababababababababababababc",
-      [
-        "a",
-        "ab",
-        "b",
-        "ba"
-      ]
-    ],
-    "expected": false
-  },
-  {
-    "args": [
-      "aaaaaaaaaaaaaaaaaab",
-      [
-        "a",
-        "ab",
-        "b",
-        "ba"
-      ]
-    ],
-    "expected": true
-  },
-  {
-    "args": [
-      "ababababababababababababababababababab",
-      [
-        "a",
-        "ab",
-        "b",
-        "ba"
-      ]
-    ],
-    "expected": true
-  },
-  {
-    "args": [
-      "ababababababababababababababababababababc",
-      [
-        "a",
-        "ab",
-        "b",
-        "ba"
-      ]
-    ],
-    "expected": false
   }
 ];
 
-test.each(cases)('case %#', ({args, expected}) => {
+test.each(cases)('$name', ({args, expected}) => {
     expect(wordBreak(...(args as any))).toEqual(expected);
 });

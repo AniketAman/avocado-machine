@@ -29,542 +29,61 @@ const cases = [
       "abc",
       "ad",
       "aba"
-    ]
+    ],
+    "name": "baseline: [[[\"a\",\"b\",\"c\"],[\"d\",\"a\",\"f\"]],[\"ab\",\"abc\",\"ad\",\"aba\",\"aaf\"]]"
   },
   {
+    "name": "deduplicates a candidate found by multiple paths",
     "args": [
       [
         [
           "a",
-          "b",
-          "c"
+          "a"
         ],
         [
-          "d",
-          "b",
-          "f"
+          "a",
+          "a"
         ]
       ],
       [
-        "ab",
-        "abc",
-        "ad",
-        "aba",
-        "abf"
+        "aa",
+        "aaa",
+        "aaaa",
+        "aaaaa"
       ]
     ],
     "expected": [
-      "ab",
-      "abc",
-      "ad"
+      "aa",
+      "aaa",
+      "aaaa"
     ]
   },
   {
+    "name": "cannot reuse cells and preserves valid prefix word",
     "args": [
       [
         [
           "a",
-          "b",
-          "c"
+          "b"
         ],
         [
-          "d",
           "c",
-          "f"
+          "d"
         ]
       ],
       [
         "ab",
-        "abc",
-        "ad",
         "aba",
-        "acf"
+        "ac"
       ]
     ],
     "expected": [
       "ab",
-      "abc",
-      "ad"
-    ]
-  },
-  {
-    "args": [
-      [
-        [
-          "a",
-          "b",
-          "c"
-        ],
-        [
-          "d",
-          "d",
-          "f"
-        ]
-      ],
-      [
-        "ab",
-        "abc",
-        "ad",
-        "aba",
-        "adf"
-      ]
-    ],
-    "expected": [
-      "ab",
-      "abc",
-      "ad"
-    ]
-  },
-  {
-    "args": [
-      [
-        [
-          "a",
-          "b",
-          "c"
-        ],
-        [
-          "d",
-          "e",
-          "f"
-        ]
-      ],
-      [
-        "ab",
-        "abc",
-        "ad",
-        "aba",
-        "aef"
-      ]
-    ],
-    "expected": [
-      "ab",
-      "abc",
-      "ad"
-    ]
-  },
-  {
-    "args": [
-      [
-        [
-          "a",
-          "b",
-          "c"
-        ],
-        [
-          "d",
-          "f",
-          "f"
-        ]
-      ],
-      [
-        "ab",
-        "abc",
-        "ad",
-        "aba",
-        "aff"
-      ]
-    ],
-    "expected": [
-      "ab",
-      "abc",
-      "ad"
-    ]
-  },
-  {
-    "args": [
-      [
-        [
-          "a",
-          "b",
-          "c"
-        ],
-        [
-          "d",
-          "g",
-          "f"
-        ]
-      ],
-      [
-        "ab",
-        "abc",
-        "ad",
-        "aba",
-        "agf"
-      ]
-    ],
-    "expected": [
-      "ab",
-      "abc",
-      "ad"
-    ]
-  },
-  {
-    "args": [
-      [
-        [
-          "a",
-          "b",
-          "c"
-        ],
-        [
-          "d",
-          "h",
-          "f"
-        ]
-      ],
-      [
-        "ab",
-        "abc",
-        "ad",
-        "aba",
-        "ahf"
-      ]
-    ],
-    "expected": [
-      "ab",
-      "abc",
-      "ad"
-    ]
-  },
-  {
-    "args": [
-      [
-        [
-          "a",
-          "b",
-          "c"
-        ],
-        [
-          "d",
-          "i",
-          "f"
-        ]
-      ],
-      [
-        "ab",
-        "abc",
-        "ad",
-        "aba",
-        "aif"
-      ]
-    ],
-    "expected": [
-      "ab",
-      "abc",
-      "ad"
-    ]
-  },
-  {
-    "args": [
-      [
-        [
-          "a",
-          "b",
-          "c"
-        ],
-        [
-          "d",
-          "j",
-          "f"
-        ]
-      ],
-      [
-        "ab",
-        "abc",
-        "ad",
-        "aba",
-        "ajf"
-      ]
-    ],
-    "expected": [
-      "ab",
-      "abc",
-      "ad"
-    ]
-  },
-  {
-    "args": [
-      [
-        [
-          "a",
-          "b",
-          "c"
-        ],
-        [
-          "d",
-          "k",
-          "f"
-        ]
-      ],
-      [
-        "ab",
-        "abc",
-        "ad",
-        "aba",
-        "akf"
-      ]
-    ],
-    "expected": [
-      "ab",
-      "abc",
-      "ad"
-    ]
-  },
-  {
-    "args": [
-      [
-        [
-          "a",
-          "b",
-          "c"
-        ],
-        [
-          "d",
-          "l",
-          "f"
-        ]
-      ],
-      [
-        "ab",
-        "abc",
-        "ad",
-        "aba",
-        "alf"
-      ]
-    ],
-    "expected": [
-      "ab",
-      "abc",
-      "ad"
-    ]
-  },
-  {
-    "args": [
-      [
-        [
-          "a",
-          "b",
-          "c"
-        ],
-        [
-          "d",
-          "m",
-          "f"
-        ]
-      ],
-      [
-        "ab",
-        "abc",
-        "ad",
-        "aba",
-        "amf"
-      ]
-    ],
-    "expected": [
-      "ab",
-      "abc",
-      "ad"
-    ]
-  },
-  {
-    "args": [
-      [
-        [
-          "a",
-          "b",
-          "c"
-        ],
-        [
-          "d",
-          "n",
-          "f"
-        ]
-      ],
-      [
-        "ab",
-        "abc",
-        "ad",
-        "aba",
-        "anf"
-      ]
-    ],
-    "expected": [
-      "ab",
-      "abc",
-      "ad"
-    ]
-  },
-  {
-    "args": [
-      [
-        [
-          "a",
-          "b",
-          "c"
-        ],
-        [
-          "d",
-          "o",
-          "f"
-        ]
-      ],
-      [
-        "ab",
-        "abc",
-        "ad",
-        "aba",
-        "aof"
-      ]
-    ],
-    "expected": [
-      "ab",
-      "abc",
-      "ad"
-    ]
-  },
-  {
-    "args": [
-      [
-        [
-          "a",
-          "b",
-          "c"
-        ],
-        [
-          "d",
-          "p",
-          "f"
-        ]
-      ],
-      [
-        "ab",
-        "abc",
-        "ad",
-        "aba",
-        "apf"
-      ]
-    ],
-    "expected": [
-      "ab",
-      "abc",
-      "ad"
-    ]
-  },
-  {
-    "args": [
-      [
-        [
-          "a",
-          "b",
-          "c"
-        ],
-        [
-          "d",
-          "q",
-          "f"
-        ]
-      ],
-      [
-        "ab",
-        "abc",
-        "ad",
-        "aba",
-        "aqf"
-      ]
-    ],
-    "expected": [
-      "ab",
-      "abc",
-      "ad"
-    ]
-  },
-  {
-    "args": [
-      [
-        [
-          "a",
-          "b",
-          "c"
-        ],
-        [
-          "d",
-          "r",
-          "f"
-        ]
-      ],
-      [
-        "ab",
-        "abc",
-        "ad",
-        "aba",
-        "arf"
-      ]
-    ],
-    "expected": [
-      "ab",
-      "abc",
-      "ad"
-    ]
-  },
-  {
-    "args": [
-      [
-        [
-          "a",
-          "b",
-          "c"
-        ],
-        [
-          "d",
-          "s",
-          "f"
-        ]
-      ],
-      [
-        "ab",
-        "abc",
-        "ad",
-        "aba",
-        "asf"
-      ]
-    ],
-    "expected": [
-      "ab",
-      "abc",
-      "ad"
-    ]
-  },
-  {
-    "args": [
-      [
-        [
-          "a",
-          "b",
-          "c"
-        ],
-        [
-          "d",
-          "t",
-          "f"
-        ]
-      ],
-      [
-        "ab",
-        "abc",
-        "ad",
-        "aba",
-        "atf"
-      ]
-    ],
-    "expected": [
-      "ab",
-      "abc",
-      "ad"
+      "ac"
     ]
   }
 ];
 
-test.each(cases)('case %#', ({args, expected}) => {
+test.each(cases)('$name', ({args, expected}) => {
     expect(normalize(findWords(...(args as any)) as any)).toEqual(normalize(expected as any));
 });

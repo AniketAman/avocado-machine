@@ -11,31 +11,20 @@ const cases = [
       ],
       "A"
     ],
-    "expected": true
+    "expected": true,
+    "name": "baseline: [[[\"A\"]],\"A\"]"
   },
   {
-    "args": [
-      [
-        [
-          "A"
-        ]
-      ],
-      "B"
-    ],
-    "expected": false
-  },
-  {
+    "name": "cannot revisit one board cell",
     "args": [
       [
         [
           "A",
-          "B",
-          "C"
+          "B"
         ],
         [
-          "D",
           "C",
-          "F"
+          "D"
         ]
       ],
       "ABA"
@@ -43,313 +32,24 @@ const cases = [
     "expected": false
   },
   {
+    "name": "orthogonal turns are allowed",
     "args": [
       [
         [
           "A",
-          "B",
-          "C"
+          "B"
         ],
         [
-          "D",
-          "D",
-          "F"
+          "C",
+          "D"
         ]
       ],
-      "ABC"
-    ],
-    "expected": true
-  },
-  {
-    "args": [
-      [
-        [
-          "A",
-          "B",
-          "C"
-        ],
-        [
-          "D",
-          "E",
-          "F"
-        ]
-      ],
-      "AD"
-    ],
-    "expected": true
-  },
-  {
-    "args": [
-      [
-        [
-          "A",
-          "B",
-          "C"
-        ],
-        [
-          "D",
-          "F",
-          "F"
-        ]
-      ],
-      "ABA"
-    ],
-    "expected": false
-  },
-  {
-    "args": [
-      [
-        [
-          "A",
-          "B",
-          "C"
-        ],
-        [
-          "D",
-          "G",
-          "F"
-        ]
-      ],
-      "ABC"
-    ],
-    "expected": true
-  },
-  {
-    "args": [
-      [
-        [
-          "A",
-          "B",
-          "C"
-        ],
-        [
-          "D",
-          "H",
-          "F"
-        ]
-      ],
-      "AD"
-    ],
-    "expected": true
-  },
-  {
-    "args": [
-      [
-        [
-          "A",
-          "B",
-          "C"
-        ],
-        [
-          "D",
-          "I",
-          "F"
-        ]
-      ],
-      "ABA"
-    ],
-    "expected": false
-  },
-  {
-    "args": [
-      [
-        [
-          "A",
-          "B",
-          "C"
-        ],
-        [
-          "D",
-          "J",
-          "F"
-        ]
-      ],
-      "ABC"
-    ],
-    "expected": true
-  },
-  {
-    "args": [
-      [
-        [
-          "A",
-          "B",
-          "C"
-        ],
-        [
-          "D",
-          "K",
-          "F"
-        ]
-      ],
-      "AD"
-    ],
-    "expected": true
-  },
-  {
-    "args": [
-      [
-        [
-          "A",
-          "B",
-          "C"
-        ],
-        [
-          "D",
-          "L",
-          "F"
-        ]
-      ],
-      "ABA"
-    ],
-    "expected": false
-  },
-  {
-    "args": [
-      [
-        [
-          "A",
-          "B",
-          "C"
-        ],
-        [
-          "D",
-          "M",
-          "F"
-        ]
-      ],
-      "ABC"
-    ],
-    "expected": true
-  },
-  {
-    "args": [
-      [
-        [
-          "A",
-          "B",
-          "C"
-        ],
-        [
-          "D",
-          "N",
-          "F"
-        ]
-      ],
-      "AD"
-    ],
-    "expected": true
-  },
-  {
-    "args": [
-      [
-        [
-          "A",
-          "B",
-          "C"
-        ],
-        [
-          "D",
-          "O",
-          "F"
-        ]
-      ],
-      "ABA"
-    ],
-    "expected": false
-  },
-  {
-    "args": [
-      [
-        [
-          "A",
-          "B",
-          "C"
-        ],
-        [
-          "D",
-          "P",
-          "F"
-        ]
-      ],
-      "ABC"
-    ],
-    "expected": true
-  },
-  {
-    "args": [
-      [
-        [
-          "A",
-          "B",
-          "C"
-        ],
-        [
-          "D",
-          "Q",
-          "F"
-        ]
-      ],
-      "AD"
-    ],
-    "expected": true
-  },
-  {
-    "args": [
-      [
-        [
-          "A",
-          "B",
-          "C"
-        ],
-        [
-          "D",
-          "R",
-          "F"
-        ]
-      ],
-      "ABA"
-    ],
-    "expected": false
-  },
-  {
-    "args": [
-      [
-        [
-          "A",
-          "B",
-          "C"
-        ],
-        [
-          "D",
-          "S",
-          "F"
-        ]
-      ],
-      "ABC"
-    ],
-    "expected": true
-  },
-  {
-    "args": [
-      [
-        [
-          "A",
-          "B",
-          "C"
-        ],
-        [
-          "D",
-          "T",
-          "F"
-        ]
-      ],
-      "AD"
+      "ABD"
     ],
     "expected": true
   }
 ];
 
-test.each(cases)('case %#', ({args, expected}) => {
+test.each(cases)('$name', ({args, expected}) => {
     expect(exist(...(args as any))).toEqual(expected);
 });

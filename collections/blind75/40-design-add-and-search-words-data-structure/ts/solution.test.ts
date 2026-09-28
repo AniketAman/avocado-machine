@@ -1,106 +1,44 @@
 import { expect, test } from "vitest";
 import { WordDictionary } from "./solution";
 
-const cases = [
-  {
-    args: [["ab", "cb"]],
-    expected: [true, true, false, true],
-  },
-  {
-    args: [["abb", "cbb"]],
-    expected: [true, true, false, true],
-  },
-  {
-    args: [["abbb", "cbbb"]],
-    expected: [true, true, false, true],
-  },
-  {
-    args: [["abbbb", "cbbbb"]],
-    expected: [true, true, false, true],
-  },
-  {
-    args: [["abbbbb", "cbbbbb"]],
-    expected: [true, true, false, true],
-  },
-  {
-    args: [["abbbbbb", "cbbbbbb"]],
-    expected: [true, true, false, true],
-  },
-  {
-    args: [["abbbbbbb", "cbbbbbbb"]],
-    expected: [true, true, false, true],
-  },
-  {
-    args: [["abbbbbbbb", "cbbbbbbbb"]],
-    expected: [true, true, false, true],
-  },
-  {
-    args: [["abbbbbbbbb", "cbbbbbbbbb"]],
-    expected: [true, true, false, true],
-  },
-  {
-    args: [["abbbbbbbbbb", "cbbbbbbbbbb"]],
-    expected: [true, true, false, true],
-  },
-  {
-    args: [["abbbbbbbbbbb", "cbbbbbbbbbbb"]],
-    expected: [true, true, false, true],
-  },
-  {
-    args: [["abbbbbbbbbbbb", "cbbbbbbbbbbbb"]],
-    expected: [true, true, false, true],
-  },
-  {
-    args: [["abbbbbbbbbbbbb", "cbbbbbbbbbbbbb"]],
-    expected: [true, true, false, true],
-  },
-  {
-    args: [["abbbbbbbbbbbbbb", "cbbbbbbbbbbbbbb"]],
-    expected: [true, true, false, true],
-  },
-  {
-    args: [["abbbbbbbbbbbbbbb", "cbbbbbbbbbbbbbbb"]],
-    expected: [true, true, false, true],
-  },
-  {
-    args: [["abbbbbbbbbbbbbbbb", "cbbbbbbbbbbbbbbbb"]],
-    expected: [true, true, false, true],
-  },
-  {
-    args: [["abbbbbbbbbbbbbbbbb", "cbbbbbbbbbbbbbbbbb"]],
-    expected: [true, true, false, true],
-  },
-  {
-    args: [["abbbbbbbbbbbbbbbbbb", "cbbbbbbbbbbbbbbbbbb"]],
-    expected: [true, true, false, true],
-  },
-  {
-    args: [["abbbbbbbbbbbbbbbbbbb", "cbbbbbbbbbbbbbbbbbbb"]],
-    expected: [true, true, false, true],
-  },
-  {
-    args: [["abbbbbbbbbbbbbbbbbbbb", "cbbbbbbbbbbbbbbbbbbbb"]],
-    expected: [true, true, false, true],
-  },
-];
-
-test.each(cases)("case %#", ({ args, expected }) => {
+test("searches complete words and treats each dot as exactly one letter", () => {
   const dict = new WordDictionary();
-  const [a, b] = args[0];
-  dict.addWord(a);
-  dict.addWord(b);
-  expect([
-    dict.search(a),
-    dict.search("." + a.slice(1)),
-    dict.search("z" + a.slice(1)),
-    dict.search(a.slice(0, -1) + "."),
-  ]).toEqual(expected);
+  dict.addWord("bad");
+  dict.addWord("dad");
+  dict.addWord("mad");
+
+  expect(dict.search("bad")).toBe(true);
+  expect(dict.search(".ad")).toBe(true);
+  expect(dict.search("b..")).toBe(true);
+  expect(dict.search("..d")).toBe(true);
+  expect(dict.search("pad")).toBe(false);
+  expect(dict.search("ba")).toBe(false);
+  expect(dict.search("badx")).toBe(false);
 });
 
-test.only("should return false if search term is not full word", () => {
+test("a wildcard must explore another branch when the first branch is only a prefix", () => {
   const dict = new WordDictionary();
-  dict.addWord("one");
-  dict.addWord("two");
-  dict.addWord("three");
-  expect(dict.search("..")).toBe(false);
+  dict.addWord("abce");
+  dict.addWord("xbcd");
+  expect(dict.search(".bcd")).toBe(true);
+  expect(dict.search(".bc")).toBe(false);
+});
+
+test("adding a shorter word after a longer word marks the existing prefix as a word", () => {
+  const dict = new WordDictionary();
+  dict.addWord("apple");
+  expect(dict.search("app")).toBe(false);
+  dict.addWord("app");
+  expect(dict.search("app")).toBe(true);
+  expect(dict.search("a.p")).toBe(true);
+  expect(dict.search("apple")).toBe(true);
+});
+
+test("adding a longer word preserves its already stored prefix", () => {
+  const dict = new WordDictionary();
+  dict.addWord("app");
+  dict.addWord("apple");
+  expect(dict.search("app")).toBe(true);
+  expect(dict.search("apple")).toBe(true);
+  expect(dict.search("appl")).toBe(false);
 });

@@ -12,252 +12,37 @@ const cases = [
         2
       ]
     ],
-    "expected": 0
+    "expected": 0,
+    "name": "baseline: [[10,8,7,5,2]]"
   },
   {
+    "name": "minimum before maximum yields profit",
     "args": [
       [
+        7,
+        1,
+        5,
         3,
-        10
-      ]
-    ],
-    "expected": 7
-  },
-  {
-    "args": [
-      [
         6,
-        13,
-        3
+        4
       ]
     ],
-    "expected": 7
+    "expected": 5
   },
   {
+    "name": "cannot sell before buying",
     "args": [
       [
         9,
-        16,
-        6,
-        13
-      ]
-    ],
-    "expected": 7
-  },
-  {
-    "args": [
-      [
-        12,
-        2,
-        9,
-        16,
-        6
-      ]
-    ],
-    "expected": 14
-  },
-  {
-    "args": [
-      [
-        15,
-        5,
-        12,
-        2,
-        9,
-        16
-      ]
-    ],
-    "expected": 14
-  },
-  {
-    "args": [
-      [
-        1,
-        8,
-        15,
-        5,
-        12,
-        2,
-        9
-      ]
-    ],
-    "expected": 14
-  },
-  {
-    "args": [
-      [
-        4,
-        11,
-        1,
-        8,
-        15,
-        5,
-        12,
-        2
-      ]
-    ],
-    "expected": 14
-  },
-  {
-    "args": [
-      [
         7,
-        14,
         4,
-        11,
-        1,
-        8,
-        15,
-        5,
-        12
-      ]
-    ],
-    "expected": 14
-  },
-  {
-    "args": [
-      [
-        10,
-        0,
-        7,
-        14,
-        4,
-        11,
-        1,
-        8,
-        15,
-        5
-      ]
-    ],
-    "expected": 15
-  },
-  {
-    "args": [
-      [
-        13
-      ]
-    ],
-    "expected": 0
-  },
-  {
-    "args": [
-      [
-        16,
-        6
-      ]
-    ],
-    "expected": 0
-  },
-  {
-    "args": [
-      [
-        2,
-        9,
-        16
-      ]
-    ],
-    "expected": 14
-  },
-  {
-    "args": [
-      [
-        5,
-        12,
-        2,
-        9
-      ]
-    ],
-    "expected": 7
-  },
-  {
-    "args": [
-      [
-        8,
-        15,
-        5,
-        12,
-        2
-      ]
-    ],
-    "expected": 7
-  },
-  {
-    "args": [
-      [
-        11,
-        1,
-        8,
-        15,
-        5,
-        12
-      ]
-    ],
-    "expected": 14
-  },
-  {
-    "args": [
-      [
-        14,
-        4,
-        11,
-        1,
-        8,
-        15,
-        5
-      ]
-    ],
-    "expected": 14
-  },
-  {
-    "args": [
-      [
-        0,
-        7,
-        14,
-        4,
-        11,
-        1,
-        8,
-        15
-      ]
-    ],
-    "expected": 15
-  },
-  {
-    "args": [
-      [
-        3,
-        10,
-        0,
-        7,
-        14,
-        4,
-        11,
-        1,
-        8
-      ]
-    ],
-    "expected": 14
-  },
-  {
-    "args": [
-      [
-        6,
-        13,
-        3,
-        10,
-        0,
-        7,
-        14,
-        4,
-        11,
         1
       ]
     ],
-    "expected": 14
+    "expected": 0
   }
 ];
 
-test.each(cases)('case %#', ({args, expected}) => {
+test.each(cases)('$name', ({args, expected}) => {
     expect(maxProfit(...(args as any))).toEqual(expected);
 });

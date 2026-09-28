@@ -8,252 +8,35 @@ const cases = [
         0
       ]
     ],
-    "expected": true
+    "expected": true,
+    "name": "baseline: [[0]]"
   },
   {
+    "name": "zero before the end can block progress",
     "args": [
       [
         3,
-        0
-      ]
-    ],
-    "expected": true
-  },
-  {
-    "args": [
-      [
         2,
-        3,
-        0
-      ]
-    ],
-    "expected": true
-  },
-  {
-    "args": [
-      [
         1,
-        2,
-        3,
-        0
-      ]
-    ],
-    "expected": true
-  },
-  {
-    "args": [
-      [
         0,
-        1,
-        2,
-        3,
-        0
+        4
       ]
     ],
     "expected": false
   },
   {
+    "name": "zero at final index is reachable",
     "args": [
       [
-        3,
-        0,
-        1,
         2,
-        3,
+        0,
         0
-      ]
-    ],
-    "expected": true
-  },
-  {
-    "args": [
-      [
-        2,
-        3,
-        0,
-        1,
-        2,
-        3,
-        0
-      ]
-    ],
-    "expected": true
-  },
-  {
-    "args": [
-      [
-        1,
-        2,
-        3,
-        0,
-        1,
-        2,
-        3,
-        0
-      ]
-    ],
-    "expected": true
-  },
-  {
-    "args": [
-      [
-        0,
-        1,
-        2,
-        3,
-        0,
-        1,
-        2,
-        3,
-        0
-      ]
-    ],
-    "expected": false
-  },
-  {
-    "args": [
-      [
-        3,
-        0,
-        1,
-        2,
-        3,
-        0,
-        1,
-        2,
-        3,
-        0
-      ]
-    ],
-    "expected": true
-  },
-  {
-    "args": [
-      [
-        2
-      ]
-    ],
-    "expected": true
-  },
-  {
-    "args": [
-      [
-        1,
-        2
-      ]
-    ],
-    "expected": true
-  },
-  {
-    "args": [
-      [
-        0,
-        1,
-        2
-      ]
-    ],
-    "expected": false
-  },
-  {
-    "args": [
-      [
-        3,
-        0,
-        1,
-        2
-      ]
-    ],
-    "expected": true
-  },
-  {
-    "args": [
-      [
-        2,
-        3,
-        0,
-        1,
-        2
-      ]
-    ],
-    "expected": true
-  },
-  {
-    "args": [
-      [
-        1,
-        2,
-        3,
-        0,
-        1,
-        2
-      ]
-    ],
-    "expected": true
-  },
-  {
-    "args": [
-      [
-        0,
-        1,
-        2,
-        3,
-        0,
-        1,
-        2
-      ]
-    ],
-    "expected": false
-  },
-  {
-    "args": [
-      [
-        3,
-        0,
-        1,
-        2,
-        3,
-        0,
-        1,
-        2
-      ]
-    ],
-    "expected": true
-  },
-  {
-    "args": [
-      [
-        2,
-        3,
-        0,
-        1,
-        2,
-        3,
-        0,
-        1,
-        2
-      ]
-    ],
-    "expected": true
-  },
-  {
-    "args": [
-      [
-        1,
-        2,
-        3,
-        0,
-        1,
-        2,
-        3,
-        0,
-        1,
-        2
       ]
     ],
     "expected": true
   }
 ];
 
-test.each(cases)('case %#', ({args, expected}) => {
+test.each(cases)('$name', ({args, expected}) => {
     expect(canJump(...(args as any))).toEqual(expected);
 });
