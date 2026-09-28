@@ -112,3 +112,32 @@ test('scaffolding assigns a permanent number and writes a pending test', async (
     fs.rmSync(dir, {recursive: true, force: true});
   }
 });
+
+test('a collection reference shares the target files and review history', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'avocado-reference-'));
+  try {
+    fs.mkdirSync(path.join(dir, 'src'));
+    fs.copyFileSync(fileURLToPath(new URL('../src/core.mjs', import.meta.url)), path.join(dir, 'src', 'core.mjs'));
+    const isolated = await import(pathToFileURL(path.join(dir, 'src', 'core.mjs')).href);
+    const original = isolated.addProblem('blind75', 'Two Sum');
+    const alias = path.join(dir, 'collections', 'grind75', '1-two-sum');
+    fs.mkdirSync(alias, {recursive: true});
+    fs.writeFileSync(path.join(alias, 'metadata.json'), JSON.stringify({id: 1, title: 'Array: Two Sum (Easy)', ref: {collection: 'blind75', id: original.id}}));
+
+    const [entry] = isolated.problems('grind75');
+    assert.equal(entry.title, 'Array: Two Sum (Easy)');
+    assert.equal(entry.id, 1);
+    assert.equal(entry.dir, original.dir);
+    assert.equal(isolated.solutionPath(entry), path.join(original.dir, 'ts', 'solution.ts'));
+    assert.equal(isolated.startProblem('grind75', 1).solution, path.join(original.dir, 'ts', 'solution.ts'));
+
+    isolated.gradeProblem('grind75', 1, 5, '2026-09-28');
+    const canonical = isolated.problemById('blind75', original.id);
+    assert.equal(canonical.title, 'Two Sum');
+    assert.equal(canonical.sm2.lastGrade, 5);
+    assert.equal(isolated.problemById('grind75', 1).sm2.dueDate, '2026-09-29');
+    assert.deepEqual(JSON.parse(fs.readFileSync(path.join(alias, 'metadata.json'), 'utf8')).ref, {collection: 'blind75', id: 1});
+  } finally {
+    fs.rmSync(dir, {recursive: true, force: true});
+  }
+});

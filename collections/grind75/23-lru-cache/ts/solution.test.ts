@@ -1,0 +1,19 @@
+import {expect, test} from 'vitest';
+import {LRUCache} from './solution';
+test('evicts least recently used key', () => {
+  const cache = new LRUCache(2);
+  cache.put(1, 1); cache.put(2, 2);
+  expect(cache.get(1)).toBe(1);
+  cache.put(3, 3);
+  expect(cache.get(2)).toBe(-1);
+  cache.put(4, 4);
+  expect(cache.get(1)).toBe(-1);
+  expect(cache.get(3)).toBe(3);
+  expect(cache.get(4)).toBe(4);
+});
+test('updating an existing key refreshes it', () => {
+  const cache = new LRUCache(2);
+  cache.put(1, 1); cache.put(2, 2); cache.put(1, 9); cache.put(3, 3);
+  expect(cache.get(1)).toBe(9);
+  expect(cache.get(2)).toBe(-1);
+});

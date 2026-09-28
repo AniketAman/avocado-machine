@@ -50,17 +50,34 @@ export function problems(collection) {
   if (!fs.existsSync(base)) throw new Error(`Unknown collection: ${collection}`);
   return fs.readdirSync(base, {withFileTypes: true})
     .filter(entry => entry.isDirectory() && /^\d+-[a-z0-9-]+$/.test(entry.name))
-    .map(entry => {
-      const dir = path.join(base, entry.name);
-      const metadata = JSON.parse(fs.readFileSync(path.join(dir, 'metadata.json'), 'utf8'));
-      if (!Number.isSafeInteger(metadata.id) || metadata.id < 1 || !entry.name.startsWith(`${metadata.id}-`)) throw new Error(`Invalid problem number in ${dir}`);
-      if (!metadata.variants || !Object.keys(metadata.variants).length) throw new Error(`Missing language variants in ${dir}`);
-      if (!metadata.variants[defaultLanguage]) throw new Error(`Missing default language in ${dir}: ${defaultLanguage}`);
-      for (const [language, variant] of Object.entries(metadata.variants)) {
-        if (runners[language]?.name !== variant.runner || !variant.sm2) throw new Error(`Unsupported runner in ${dir}: ${variant.runner}`);
-      }
-      return {...metadata, dir, collection, language: defaultLanguage, runner: metadata.variants[defaultLanguage]?.runner, sm2: metadata.variants[defaultLanguage]?.sm2};
-    }).sort((a, b) => a.id - b.id);
+    .map(entry => readCollectionEntry(collection, entry.name, new Set()))
+    .sort((a, b) => a.id - b.id);
+}
+
+function readCollectionEntry(collection, entryName, seen) {
+  const dir = path.join(collectionsRoot, collection, entryName);
+  const key = `${collection}/${entryName}`;
+  if (seen.has(key)) throw new Error(`Circular problem reference: ${key}`);
+  seen.add(key);
+  const metadata = JSON.parse(fs.readFileSync(path.join(dir, 'metadata.json'), 'utf8'));
+  if (!Number.isSafeInteger(metadata.id) || metadata.id < 1 || !entryName.startsWith(`${metadata.id}-`)) throw new Error(`Invalid problem number in ${dir}`);
+  if (metadata.ref) {
+    const {collection: targetCollection, id: targetId} = metadata.ref;
+    assertName(targetCollection, 'collection');
+    if (!Number.isSafeInteger(targetId) || targetId < 1) throw new Error(`Invalid problem reference in ${dir}`);
+    const targetBase = path.join(collectionsRoot, targetCollection);
+    if (!fs.existsSync(targetBase)) throw new Error(`Unknown referenced collection: ${targetCollection}`);
+    const targetEntry = fs.readdirSync(targetBase).find(name => name.startsWith(`${targetId}-`));
+    if (!targetEntry) throw new Error(`Missing referenced problem: ${targetCollection} #${targetId}`);
+    const target = readCollectionEntry(targetCollection, targetEntry, seen);
+    return {...target, id: metadata.id, title: metadata.title, collection, ref: metadata.ref};
+  }
+  if (!metadata.variants || !Object.keys(metadata.variants).length) throw new Error(`Missing language variants in ${dir}`);
+  if (!metadata.variants[defaultLanguage]) throw new Error(`Missing default language in ${dir}: ${defaultLanguage}`);
+  for (const [language, variant] of Object.entries(metadata.variants)) {
+    if (runners[language]?.name !== variant.runner || !variant.sm2) throw new Error(`Unsupported runner in ${dir}: ${variant.runner}`);
+  }
+  return {...metadata, dir, collection, language: defaultLanguage, runner: metadata.variants[defaultLanguage]?.runner, sm2: metadata.variants[defaultLanguage]?.sm2};
 }
 
 export function problemById(collection, id) {
@@ -161,8 +178,9 @@ export function gradeProblem(collection, id, grade, today = localDate(), languag
   if (!problem.variants[language]) throw new Error(`Unsupported language for #${id}: ${language}`);
   const value = Number(grade);
   const sm2 = nextSm2(problem.variants[language].sm2, value, today);
-  const metadata = {id: problem.id, title: problem.title, variants: {...problem.variants, [language]: {...problem.variants[language], sm2}}};
   const target = path.join(problem.dir, 'metadata.json');
+  const current = JSON.parse(fs.readFileSync(target, 'utf8'));
+  const metadata = {...current, variants: {...current.variants, [language]: {...current.variants[language], sm2}}};
   const temp = path.join(problem.dir, `.metadata-${process.pid}-${Date.now()}.tmp`);
   fs.writeFileSync(temp, JSON.stringify(metadata, null, 2) + '\n');
   fs.renameSync(temp, target);
