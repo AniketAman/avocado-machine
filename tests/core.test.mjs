@@ -22,6 +22,15 @@ test('suggestions include overdue reviews oldest first and fill unused slots', (
   assert.deepEqual(larger.fresh.map(problem => problem.id), [3, 4, 5]);
 });
 
+test('new and review suggestions include only their selected category', () => {
+  const items = [item(1, '2026-09-20'), item(2), item(3, '2026-10-01'), item(4), item(5, '2026-09-25')];
+  assert.deepEqual(suggestions(items, undefined, '2026-09-26', 'new').fresh.map(problem => problem.id), [2, 4]);
+  assert.deepEqual(suggestions(items, undefined, '2026-09-26', 'new').due, []);
+  assert.deepEqual(suggestions(items, 1, '2026-09-26', 'review').due.map(problem => problem.id), [1]);
+  assert.deepEqual(suggestions(items, undefined, '2026-09-26', 'review').due.map(problem => problem.id), [1, 5]);
+  assert.deepEqual(suggestions(items, undefined, '2026-09-26', 'review').fresh, []);
+});
+
 test('SM-2 advances on grades and restarts weak recall tomorrow', () => {
   const initial = newMetadata(1, 'One').variants.ts.sm2;
   const first = nextSm2(initial, 5, '2026-09-26');

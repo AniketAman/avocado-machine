@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Box, Text, render, useApp, useInput} from 'ink';
 import fs from 'node:fs';
 import path from 'node:path';
-import {collections, gradeProblem, localDate, problems, runTests, searchGroups, startProblem, status, suggestions, testCommand} from './core.mjs';
+import {collections, gradeProblem, isDue, localDate, problems, runTests, searchGroups, solutionPath, startProblem, status, suggestions, testCommand} from './core.mjs';
 
 const h = React.createElement;
 
@@ -14,14 +14,14 @@ function section(title, items, selectedId, today, color) {
       `${item.id === selectedId ? '›' : ' '} ${String(item.id).padStart(3)}  ${item.title}  ·  ${status(item, today)}${item.sm2.lastGrade === null ? '' : `  ·  last ${item.sm2.lastGrade}`}`)));
 }
 
-function App({initialCollection, initialCount}) {
+function App({initialCollection, initialCount, initialMode = 'practice'}) {
   const {exit} = useApp();
   const [screen, setScreen] = useState(initialCollection ? 'practice' : 'home');
   const [collection, setCollection] = useState(initialCollection ?? null);
   const [count, setCount] = useState(initialCount);
+  const [practiceMode, setPracticeMode] = useState(initialMode);
   const [items, setItems] = useState(initialCollection ? problems(initialCollection) : []);
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const [activeId, setActiveId] = useState(null);
   const [mode, setMode] = useState(null);
   const [draft, setDraft] = useState('');
   const [query, setQuery] = useState('');
@@ -29,20 +29,21 @@ function App({initialCollection, initialCount}) {
   const [testResult, setTestResult] = useState(null);
   const [testing, setTesting] = useState(false);
   const today = localDate();
-  const selected = screen === 'practice' ? suggestions(items, count, today) : {due: [], fresh: []};
-  const groups = screen === 'practice' ? searchGroups(items, selected, query, today) : {due: [], fresh: [], current: []};
+  const eligible = practiceMode === 'new' ? items.filter(item => item.sm2.lastGrade === null) : practiceMode === 'review' ? items.filter(item => isDue(item, today)) : items;
+  const selected = screen === 'practice' ? suggestions(eligible, count, today, practiceMode) : {due: [], fresh: []};
+  const groups = screen === 'practice' ? searchGroups(eligible, selected, query, today) : {due: [], fresh: [], current: []};
   const rows = [...groups.due, ...groups.fresh, ...groups.current];
   const safeIndex = Math.min(selectedIndex, Math.max(0, rows.length - 1));
   const highlighted = rows[safeIndex];
   const names = collections();
 
-  function openPractice(name, limit) {
+  function openPractice(name, limit, kind = practiceMode) {
     const loaded = problems(name);
     setCollection(name);
     setCount(limit);
+    setPracticeMode(kind);
     setItems(loaded);
     setSelectedIndex(0);
-    setActiveId(null);
     setQuery('');
     setTestResult(null);
     setScreen('practice');
@@ -53,16 +54,18 @@ function App({initialCollection, initialCount}) {
     const parts = command.trim().split(/\s+/);
     const verb = parts[0]?.toLowerCase();
     try {
-      if (verb === '/practice') {
+      if (['/practice', '/new', '/review'].includes(verb)) {
+        const kind = verb.slice(1);
         if (parts.length === 1) {
+          setPracticeMode(kind);
           setScreen('collections');
           setSelectedIndex(0);
           setMessage('Choose a collection');
         } else if (parts.length <= 3) {
           const limit = parts[2] === undefined ? undefined : Number(parts[2]);
           if (parts[2] !== undefined && (!Number.isSafeInteger(limit) || limit < 1)) throw new Error('Count must be a positive integer');
-          openPractice(parts[1], limit);
-        } else throw new Error('Usage: /practice [collection] [count]');
+          openPractice(parts[1], limit, kind);
+        } else throw new Error(`Usage: ${verb} [collection] [count]`);
       } else if (verb === '/done') {
         if (!collection || parts.length !== 3) throw new Error('Usage: /done <number> <grade> from a collection');
         const id = Number(parts[1]);
@@ -72,7 +75,7 @@ function App({initialCollection, initialCount}) {
         setItems(problems(collection));
         setMessage(`#${id} graded ${grade}; next review ${updated.sm2.dueDate}`);
       } else if (verb === '/help') {
-        setMessage('/practice [collection] [count] · /done <number> <grade> · /quit');
+        setMessage('/practice, /new, /review [collection] [count] · /done <number> <grade> · /quit');
       } else if (verb === '/quit') exit();
       else throw new Error(`Unknown command: ${verb || command}`);
     } catch (error) {
@@ -80,7 +83,7 @@ function App({initialCollection, initialCount}) {
     }
   }
 
-  function startHighlighted() {
+  function selectHighlighted() {
     if (screen === 'collections') {
       const name = names[Math.min(selectedIndex, names.length - 1)];
       if (name) openPractice(name);
@@ -92,29 +95,30 @@ function App({initialCollection, initialCount}) {
       return;
     }
     if (!highlighted) return;
+    setMessage(`#${highlighted.id} solution: ${path.relative(process.cwd(), solutionPath(highlighted))}`);
+  }
+
+  function archiveAndResetHighlighted() {
+    if (!highlighted) return;
     try {
       const result = startProblem(collection, highlighted.id);
-      setActiveId(highlighted.id);
-      setMessage(`#${highlighted.id} ready: ${path.relative(process.cwd(), result.solution)}${result.archive ? ` · archived ${path.relative(process.cwd(), result.archive)}` : ''}`);
+      setMessage(`#${highlighted.id} new attempt: ${path.relative(process.cwd(), result.solution)}${result.archive ? ` · archived ${path.relative(process.cwd(), result.archive)}` : ' · no changed solution to archive'}`);
       setTestResult(null);
     } catch (error) {
       setMessage(error.message);
     }
   }
 
-  function testActive() {
-    const active = items.find(item => item.id === activeId);
-    if (!active) {
-      setMessage('Select a problem with Enter before running tests');
-      return;
-    }
+  function testHighlighted() {
+    if (!highlighted) return;
+    const problem = highlighted;
     setTesting(true);
     setTestResult(null);
-    setMessage(`Running tests for #${active.id}…`);
-    runTests(active).then(result => {
+    setMessage(`Running tests for #${problem.id}…`);
+    runTests(problem).then(result => {
       setTesting(false);
       setTestResult(result);
-      setMessage(`Tests for #${active.id} ${result.code === 0 ? 'passed' : 'failed'}`);
+      setMessage(`Tests for #${problem.id} ${result.code === 0 ? 'passed' : 'failed'}`);
     }).catch(error => {
       setTesting(false);
       setMessage(`Test runner failed: ${error.message}`);
@@ -152,24 +156,29 @@ function App({initialCollection, initialCount}) {
     if (input.startsWith('/')) { setMode('command'); setDraft(input); return; }
     if (input === 's' && screen === 'practice') { setMode('search'); setDraft(query); return; }
     if (input === 'c' && screen === 'practice') { setQuery(''); setSelectedIndex(0); return; }
-    if (input === 't' && screen === 'practice' && !testing) { testActive(); return; }
+    if (input === 't' && screen === 'practice' && !testing) { testHighlighted(); return; }
+    if (input === 'a' && screen === 'practice' && !testing) { archiveAndResetHighlighted(); return; }
     if (input === 'x' && screen === 'practice') { setTestResult(null); setMessage(''); return; }
     if (input === 'q') { exit(); return; }
     if (key.upArrow || input === 'k') setSelectedIndex(index => Math.max(0, index - 1));
     else if (key.downArrow || input === 'j') setSelectedIndex(index => Math.min((screen === 'collections' ? names.length : rows.length) - 1, index + 1));
-    else if (key.return) startHighlighted();
+    else if (key.return) selectHighlighted();
     else if (key.escape && screen === 'practice') { setScreen('collections'); setSelectedIndex(0); setQuery(''); }
   });
 
   const preview = highlighted ? fs.readFileSync(path.join(highlighted.dir, 'description.md'), 'utf8').trim().split('\n').slice(0, 14).join('\n') : '';
   const output = testResult?.output;
+  const listLabel = practiceMode === 'practice'
+    ? count === undefined ? '3 due + 3 new' : `${count} suggestions`
+    : `${count ?? 3} ${practiceMode === 'new' ? `new problem${count === 1 ? '' : 's'}` : `due review${count === 1 ? '' : 's'}`}`;
 
   return h(Box, {flexDirection: 'column', paddingX: 1},
-    h(Text, {bold: true, color: 'green'}, '🥑 AVOCADO  ·  personal kata machine'),
-    h(Text, {dimColor: true}, screen === 'practice' ? `${collection}  ·  TypeScript (ts)  ·  ${count === undefined ? '3 due + 3 new' : `${count} suggestions`}  ·  ${items.length} problems` : 'Practice collections'),
+    h(Text, {bold: true, color: 'green'}, '🥑 AVOCADO MACHINE  ·  local code kata practice'),
+    h(Text, {dimColor: true}, screen === 'practice' ? `${collection}  ·  TypeScript (ts)  ·  ${listLabel}  ·  ${items.length} problems` : 'Practice collections'),
     screen === 'home' ? h(Box, {flexDirection: 'column', marginTop: 1},
       h(Text, null, 'Press Enter or type /practice to choose a collection.'),
       h(Text, null, 'Type /practice dsa 15 to open a list directly.'),
+      h(Text, null, 'Use /new dsa or /review dsa for one category.'),
       h(Text, {dimColor: true}, `${names.length} collection${names.length === 1 ? '' : 's'} available`)) : null,
     screen === 'collections' ? h(Box, {flexDirection: 'column', marginTop: 1},
       h(Text, {bold: true, color: 'cyan'}, 'Collections'),
@@ -185,11 +194,11 @@ function App({initialCollection, initialCount}) {
         highlighted ? h(Text, {dimColor: true}, `${status(highlighted, today)} · last grade ${highlighted.sm2.lastGrade ?? '—'}`) : null,
         h(Text, null, preview || 'Select a problem to see its description.'),
         highlighted ? h(Text, {color: 'blue'}, testCommand(highlighted)) : null,
-        activeId ? h(Text, {color: 'green'}, `Active problem: #${activeId}`) : null)) : null,
+        highlighted ? h(Text, {color: 'green'}, path.relative(process.cwd(), solutionPath(highlighted))) : null)) : null,
     message ? h(Text, {color: 'yellow'}, message) : null,
     output ? h(Box, {flexDirection: 'column', borderStyle: 'round', borderColor: testResult.code === 0 ? 'green' : 'red', paddingX: 1},
       h(Text, {bold: true}, `Test output · exit ${testResult.code}`), h(Text, null, output)) : null,
-    h(Text, {dimColor: true}, mode === 'command' ? `Command: ${draft}` : mode === 'search' ? `Search: ${draft}` : screen === 'practice' ? '↑↓ navigate · Enter start · t test active · x clear output · s search · c clear search · / command · Esc collections · q quit' : '↑↓ navigate · Enter select · / command · q quit'));
+    h(Text, {dimColor: true}, mode === 'command' ? `Command: ${draft}` : mode === 'search' ? `Search: ${draft}` : screen === 'practice' ? '↑↓ navigate · Enter show path · t test selected · a archive and reset · x clear output · s search · c clear search · / command · Esc collections · q quit' : '↑↓ navigate · Enter select · / command · q quit'));
 }
 
 export function startTui(options = {}) {

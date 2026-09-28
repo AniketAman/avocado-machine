@@ -1,6 +1,6 @@
-# Kata Machine
+# Avocado Machine
 
-A personal practice system that organizes coding exercises and schedules repeat attempts.
+A local code kata platform that organizes coding exercises and schedules repeat attempts.
 
 ## Language
 
@@ -18,14 +18,14 @@ A permanent numeric identifier for a problem within its collection. The collecti
 A version of a problem practiced in one programming language, with its own tests, starter template, solution file, and review schedule.
 
 **Starter template**:
-The starting code copied into a problem's solution file when the problem is selected for practice.
+The starting code for a new practice attempt in a language variant.
 _Avoid_: Reference solution
 
 **Solution file**:
-The working code for the selected problem. Its previous contents are saved before a new attempt begins.
+The working code for a language variant's current attempt.
 
 **Review**:
-A repeat attempt on a previously practiced language variant that is due according to its spaced repetition schedule.
+An opportunity to revisit a previously graded language variant when its spaced repetition schedule is due.
 
 **Due review**:
 A review whose scheduled date has arrived or passed.
@@ -40,4 +40,4 @@ The learner's rating of how well they recalled a solution in one language. It de
 The scheduling record for a language variant, including the information needed to determine its next review.
 
 **Solution archive**:
-A saved copy of a problem's solution file from before a new practice attempt.
+A saved copy of a changed solution file from before a new practice attempt.

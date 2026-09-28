@@ -12,11 +12,11 @@ function positiveCount(value) {
 async function main(args) {
   const [verb, ...rest] = args;
   if (!verb) return startTui();
-  if (verb === 'practice') {
-    if (rest.length > 2) throw new Error('Usage: avocado practice [collection] [count]');
-    if (!rest[0]) return startTui();
+  if (['practice', 'new', 'review'].includes(verb)) {
+    if (rest.length > 2) throw new Error(`Usage: avocado ${verb} [collection] [count]`);
+    if (!rest[0]) return startTui({initialMode: verb});
     problems(rest[0]);
-    return startTui({initialCollection: rest[0], initialCount: positiveCount(rest[1])});
+    return startTui({initialCollection: rest[0], initialCount: positiveCount(rest[1]), initialMode: verb});
   }
   if (verb === 'done') {
     if (rest.length !== 3) throw new Error('Usage: avocado done <collection> <number> <grade>');
@@ -35,7 +35,7 @@ async function main(args) {
     return;
   }
   if (verb === 'help' || verb === '--help' || verb === '-h') {
-    console.log('avocado\navocado practice [collection] [count]\navocado done <collection> <number> <grade>\navocado add <collection> "Problem Title"');
+    console.log('avocado\navocado practice [collection] [count]\navocado new [collection] [count]\navocado review [collection] [count]\navocado done <collection> <number> <grade>\navocado add <collection> "Problem Title"');
     return;
   }
   throw new Error(`Unknown command: ${verb}`);

@@ -78,10 +78,16 @@ export function status(problem, today = localDate()) {
   return isDue(problem, today) ? 'Due' : `Scheduled ${problem.sm2.dueDate}`;
 }
 
-export function suggestions(items, count, today = localDate()) {
+export function suggestions(items, count, today = localDate(), mode = 'practice') {
+  if (!['practice', 'new', 'review'].includes(mode)) throw new Error(`Unknown practice mode: ${mode}`);
   const due = items.filter(item => isDue(item, today))
     .sort((a, b) => a.sm2.dueDate.localeCompare(b.sm2.dueDate) || a.id - b.id);
   const fresh = items.filter(item => item.sm2.lastGrade === null).sort((a, b) => a.id - b.id);
+  if (mode !== 'practice') {
+    const limit = count === undefined ? 3 : count;
+    if (!Number.isSafeInteger(limit) || limit < 1) throw new Error('Count must be a positive integer');
+    return mode === 'new' ? {due: [], fresh: fresh.slice(0, limit)} : {due: due.slice(0, limit), fresh: []};
+  }
   if (count === undefined) {
     const selectedDue = due.slice(0, 3);
     const selectedNew = fresh.slice(0, 3);
@@ -111,6 +117,10 @@ export function searchGroups(items, selected, query, today = localDate()) {
 
 export function testCommand(problem) {
   return `npx vitest run ${path.relative(root, languageFiles(problem, problem.language).test)}`;
+}
+
+export function solutionPath(problem) {
+  return languageFiles(problem, problem.language).target;
 }
 
 export function startProblem(collection, id, now = new Date(), language = defaultLanguage) {

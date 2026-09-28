@@ -1,7 +1,7 @@
 {
-  "name": "avacado-machine",
+  "name": "avocado-machine",
   "version": "1.0.0",
-  "description": "A personal kata practice machine",
+  "description": "A local code kata practice platform",
   "bin": {
     "avocado": "./src/cli.mjs"
   },
@@ -10,16 +10,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vigneshTheDev/avacado-machine.git"
+    "url": "git+https://github.com/vigneshTheDev/avocado-machine.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "bugs": {
-    "url": "https://github.com/vigneshTheDev/avacado-machine/issues"
+    "url": "https://github.com/vigneshTheDev/avocado-machine/issues"
   },
-  "homepage": "https://github.com/vigneshTheDev/avacado-machine#readme",
+  "homepage": "https://github.com/vigneshTheDev/avocado-machine#readme",
   "devDependencies": {
     "vitest": "^4.1.10"
   },
