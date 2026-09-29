@@ -1,0 +1,17 @@
+{
+  "id": 32,
+  "title": "Stack: Asteroid Collision (Medium)",
+  "variants": {
+    "ts": {
+      "runner": "typescript-vitest",
+      "sm2": {
+        "repetitions": 0,
+        "easeFactor": 2.5,
+        "intervalDays": 0,
+        "dueDate": null,
+        "lastGrade": null,
+        "lastReviewedAt": null
+      }
+    }
+  }
+}

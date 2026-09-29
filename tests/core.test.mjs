@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import {pathToFileURL, fileURLToPath} from 'node:url';
-import {newMetadata, nextSm2, searchGroups, startProblemFiles, suggestions} from '../src/core.mjs';
+import {newMetadata, nextSm2, problems, searchGroups, startProblemFiles, suggestions} from '../src/core.mjs';
 
 function item(id, dueDate = null) {
   const metadata = newMetadata(id, `Problem ${id}`);
@@ -140,4 +140,34 @@ test('a collection reference shares the target files and review history', async 
   } finally {
     fs.rmSync(dir, {recursive: true, force: true});
   }
+});
+
+test('grindall follows the topic-grouped source and directly shares existing problems', () => {
+  const base = fileURLToPath(new URL('../collections/grindall/', import.meta.url));
+  const source = fs.readFileSync(path.join(base, 'source.tsv'), 'utf8').trim().split('\n').slice(1);
+  const entries = problems('grindall');
+  assert.equal(source.length, 169);
+  assert.equal(entries.length, 169);
+  let references = 0;
+  for (const [index, line] of source.entries()) {
+    const [id, topic, name, difficulty, slug] = line.split('\t');
+    assert.equal(Number(id), index + 1);
+    const entry = entries[index];
+    assert.equal(entry.id, index + 1);
+    assert.equal(entry.title, `${topic}: ${name} (${difficulty})`);
+    const dir = path.join(base, `${id}-${slug}`);
+    const metadata = JSON.parse(fs.readFileSync(path.join(dir, 'metadata.json'), 'utf8'));
+    if (metadata.ref) {
+      references++;
+      const owner = entries[index].dir;
+      assert.equal(owner.includes(`/collections/${metadata.ref.collection}/`), true);
+      assert.equal(JSON.parse(fs.readFileSync(path.join(owner, 'metadata.json'), 'utf8')).ref, undefined);
+    } else {
+      assert.equal(entry.dir, dir);
+      assert.equal(fs.existsSync(path.join(dir, 'description.md')), true);
+      assert.equal(fs.existsSync(path.join(dir, 'ts', 'solution.template.ts')), true);
+      assert.equal(fs.existsSync(path.join(dir, 'ts', 'solution.test.ts')), true);
+    }
+  }
+  assert.equal(references, 105);
 });

@@ -1,0 +1,170 @@
+id	topic	title	difficulty	leetcode_slug
+1	Array	Two Sum	Easy	two-sum
+2	Array	Best Time to Buy and Sell Stock	Easy	best-time-to-buy-and-sell-stock
+3	Array	Majority Element	Easy	majority-element
+4	Array	Contains Duplicate	Easy	contains-duplicate
+5	Array	Meeting Rooms	Easy	meeting-rooms
+6	Array	Move Zeroes	Easy	move-zeroes
+7	Array	Squares of a Sorted Array	Easy	squares-of-a-sorted-array
+8	Array	Insert Interval	Medium	insert-interval
+9	Array	3Sum	Medium	3sum
+10	Array	Product of Array Except Self	Medium	product-of-array-except-self
+11	Array	Combination Sum	Medium	combination-sum
+12	Array	Merge Intervals	Medium	merge-intervals
+13	Array	Sort Colors	Medium	sort-colors
+14	Array	Container With Most Water	Medium	container-with-most-water
+15	Array	Gas Station	Medium	gas-station
+16	Array	Longest Consecutive Sequence	Medium	longest-consecutive-sequence
+17	Array	Rotate Array	Medium	rotate-array
+18	Array	Contiguous Array	Medium	contiguous-array
+19	Array	Subarray Sum Equals K	Medium	subarray-sum-equals-k
+20	Array	Meeting Rooms II	Medium	meeting-rooms-ii
+21	Array	3Sum Closest	Medium	3sum-closest
+22	Array	Non-overlapping Intervals	Medium	non-overlapping-intervals
+23	Array	Employee Free Time	Hard	employee-free-time
+24	Array	Sliding Window Maximum	Hard	sliding-window-maximum
+25	Stack	Valid Parentheses	Easy	valid-parentheses
+26	Stack	Implement Queue using Stacks	Easy	implement-queue-using-stacks
+27	Stack	Backspace String Compare	Easy	backspace-string-compare
+28	Stack	Evaluate Reverse Polish Notation	Medium	evaluate-reverse-polish-notation
+29	Stack	Min Stack	Medium	min-stack
+30	Stack	Daily Temperatures	Medium	daily-temperatures
+31	Stack	Decode String	Medium	decode-string
+32	Stack	Asteroid Collision	Medium	asteroid-collision
+33	Stack	Basic Calculator II	Medium	basic-calculator-ii
+34	Stack	Trapping Rain Water	Hard	trapping-rain-water
+35	Stack	Basic Calculator	Hard	basic-calculator
+36	Stack	Largest Rectangle in Histogram	Hard	largest-rectangle-in-histogram
+37	Stack	Maximum Frequency Stack	Hard	maximum-frequency-stack
+38	Stack	Longest Valid Parentheses	Hard	longest-valid-parentheses
+39	Linked List	Merge Two Sorted Lists	Easy	merge-two-sorted-lists
+40	Linked List	Linked List Cycle	Easy	linked-list-cycle
+41	Linked List	Reverse Linked List	Easy	reverse-linked-list
+42	Linked List	Middle of the Linked List	Easy	middle-of-the-linked-list
+43	Linked List	Palindrome Linked List	Easy	palindrome-linked-list
+44	Linked List	LRU Cache	Medium	lru-cache
+45	Linked List	Remove Nth Node From End of List	Medium	remove-nth-node-from-end-of-list
+46	Linked List	Swap Nodes in Pairs	Medium	swap-nodes-in-pairs
+47	Linked List	Odd Even Linked List	Medium	odd-even-linked-list
+48	Linked List	Add Two Numbers	Medium	add-two-numbers
+49	Linked List	Sort List	Medium	sort-list
+50	Linked List	Reorder List	Medium	reorder-list
+51	Linked List	Rotate List	Medium	rotate-list
+52	Linked List	Reverse Nodes in k-Group	Hard	reverse-nodes-in-k-group
+53	String	Valid Palindrome	Easy	valid-palindrome
+54	String	Valid Anagram	Easy	valid-anagram
+55	String	Longest Palindrome	Easy	longest-palindrome
+56	String	Longest Common Prefix	Easy	longest-common-prefix
+57	String	Longest Substring Without Repeating Characters	Medium	longest-substring-without-repeating-characters
+58	String	String to Integer (atoi)	Medium	string-to-integer-atoi
+59	String	Longest Palindromic Substring	Medium	longest-palindromic-substring
+60	String	Find All Anagrams in a String	Medium	find-all-anagrams-in-a-string
+61	String	Group Anagrams	Medium	group-anagrams
+62	String	Longest Repeating Character Replacement	Medium	longest-repeating-character-replacement
+63	String	Largest Number	Medium	largest-number
+64	String	Encode and Decode Strings	Medium	encode-and-decode-strings
+65	String	Minimum Window Substring	Hard	minimum-window-substring
+66	String	Palindrome Pairs	Hard	palindrome-pairs
+67	Binary Tree	Invert Binary Tree	Easy	invert-binary-tree
+68	Binary Tree	Balanced Binary Tree	Easy	balanced-binary-tree
+69	Binary Tree	Diameter of Binary Tree	Easy	diameter-of-binary-tree
+70	Binary Tree	Maximum Depth of Binary Tree	Easy	maximum-depth-of-binary-tree
+71	Binary Tree	Same Tree	Easy	same-tree
+72	Binary Tree	Symmetric Tree	Easy	symmetric-tree
+73	Binary Tree	Subtree of Another Tree	Easy	subtree-of-another-tree
+74	Binary Tree	Binary Tree Level Order Traversal	Medium	binary-tree-level-order-traversal
+75	Binary Tree	Lowest Common Ancestor of a Binary Tree	Medium	lowest-common-ancestor-of-a-binary-tree
+76	Binary Tree	Binary Tree Right Side View	Medium	binary-tree-right-side-view
+77	Binary Tree	Construct Binary Tree from Preorder and Inorder Traversal	Medium	construct-binary-tree-from-preorder-and-inorder-traversal
+78	Binary Tree	Path Sum II	Medium	path-sum-ii
+79	Binary Tree	Maximum Width of Binary Tree	Medium	maximum-width-of-binary-tree
+80	Binary Tree	Binary Tree Zigzag Level Order Traversal	Medium	binary-tree-zigzag-level-order-traversal
+81	Binary Tree	Path Sum III	Medium	path-sum-iii
+82	Binary Tree	All Nodes Distance K in Binary Tree	Medium	all-nodes-distance-k-in-binary-tree
+83	Binary Tree	Serialize and Deserialize Binary Tree	Hard	serialize-and-deserialize-binary-tree
+84	Binary Tree	Binary Tree Maximum Path Sum	Hard	binary-tree-maximum-path-sum
+85	Binary Search	Binary Search	Easy	binary-search
+86	Binary Search	First Bad Version	Easy	first-bad-version
+87	Binary Search	Search in Rotated Sorted Array	Medium	search-in-rotated-sorted-array
+88	Binary Search	Time Based Key-Value Store	Medium	time-based-key-value-store
+89	Binary Search	Search a 2D Matrix	Medium	search-a-2d-matrix
+90	Binary Search	Find Minimum in Rotated Sorted Array	Medium	find-minimum-in-rotated-sorted-array
+91	Binary Search	Maximum Profit in Job Scheduling	Hard	maximum-profit-in-job-scheduling
+92	Binary Search	Median of Two Sorted Arrays	Hard	median-of-two-sorted-arrays
+93	Graph	Flood Fill	Easy	flood-fill
+94	Graph	01 Matrix	Medium	01-matrix
+95	Graph	Clone Graph	Medium	clone-graph
+96	Graph	Course Schedule	Medium	course-schedule
+97	Graph	Number of Islands	Medium	number-of-islands
+98	Graph	Rotting Oranges	Medium	rotting-oranges
+99	Graph	Accounts Merge	Medium	accounts-merge
+100	Graph	Word Search	Medium	word-search
+101	Graph	Minimum Height Trees	Medium	minimum-height-trees
+102	Graph	Pacific Atlantic Water Flow	Medium	pacific-atlantic-water-flow
+103	Graph	Shortest Path to Get Food	Medium	shortest-path-to-get-food
+104	Graph	Graph Valid Tree	Medium	graph-valid-tree
+105	Graph	Course Schedule II	Medium	course-schedule-ii
+106	Graph	Number of Connected Components in an Undirected Graph	Medium	number-of-connected-components-in-an-undirected-graph
+107	Graph	Minimum Knight Moves	Medium	minimum-knight-moves
+108	Graph	Cheapest Flights Within K Stops	Medium	cheapest-flights-within-k-stops
+109	Graph	Word Ladder	Hard	word-ladder
+110	Graph	Longest Increasing Path in a Matrix	Hard	longest-increasing-path-in-a-matrix
+111	Graph	Word Search II	Hard	word-search-ii
+112	Graph	Alien Dictionary	Hard	alien-dictionary
+113	Graph	Bus Routes	Hard	bus-routes
+114	Binary Search Tree	Lowest Common Ancestor of a Binary Search Tree	Easy	lowest-common-ancestor-of-a-binary-search-tree
+115	Binary Search Tree	Convert Sorted Array to Binary Search Tree	Easy	convert-sorted-array-to-binary-search-tree
+116	Binary Search Tree	Validate Binary Search Tree	Medium	validate-binary-search-tree
+117	Binary Search Tree	Kth Smallest Element in a BST	Medium	kth-smallest-element-in-a-bst
+118	Binary Search Tree	Inorder Successor in BST	Medium	inorder-successor-in-bst
+119	Hash Table	Ransom Note	Easy	ransom-note
+120	Hash Table	Insert Delete GetRandom O(1)	Medium	insert-delete-getrandom-o1
+121	Hash Table	First Missing Positive	Hard	first-missing-positive
+122	Dynamic Programming	Climbing Stairs	Easy	climbing-stairs
+123	Dynamic Programming	Maximum Subarray	Medium	maximum-subarray
+124	Dynamic Programming	Coin Change	Medium	coin-change
+125	Dynamic Programming	Partition Equal Subset Sum	Medium	partition-equal-subset-sum
+126	Dynamic Programming	Unique Paths	Medium	unique-paths
+127	Dynamic Programming	House Robber	Medium	house-robber
+128	Dynamic Programming	Maximum Product Subarray	Medium	maximum-product-subarray
+129	Dynamic Programming	Longest Increasing Subsequence	Medium	longest-increasing-subsequence
+130	Dynamic Programming	Jump Game	Medium	jump-game
+131	Dynamic Programming	Maximal Square	Medium	maximal-square
+132	Dynamic Programming	Decode Ways	Medium	decode-ways
+133	Dynamic Programming	Combination Sum IV	Medium	combination-sum-iv
+134	Binary	Add Binary	Easy	add-binary
+135	Binary	Counting Bits	Easy	counting-bits
+136	Binary	Number of 1 Bits	Easy	number-of-1-bits
+137	Binary	Single Number	Easy	single-number
+138	Binary	Missing Number	Easy	missing-number
+139	Binary	Reverse Bits	Easy	reverse-bits
+140	Binary	Find the Duplicate Number	Medium	find-the-duplicate-number
+141	Math	Roman to Integer	Easy	roman-to-integer
+142	Math	Palindrome Number	Easy	palindrome-number
+143	Math	Random Pick with Weight	Medium	random-pick-with-weight
+144	Math	Pow(x, n)	Medium	powx-n
+145	Math	Reverse Integer	Medium	reverse-integer
+146	Heap	K Closest Points to Origin	Medium	k-closest-points-to-origin
+147	Heap	Task Scheduler	Medium	task-scheduler
+148	Heap	Top K Frequent Words	Medium	top-k-frequent-words
+149	Heap	Find K Closest Elements	Medium	find-k-closest-elements
+150	Heap	Kth Largest Element in an Array	Medium	kth-largest-element-in-an-array
+151	Heap	Find Median from Data Stream	Hard	find-median-from-data-stream
+152	Heap	Merge k Sorted Lists	Hard	merge-k-sorted-lists
+153	Heap	Smallest Range Covering Elements from K Lists	Hard	smallest-range-covering-elements-from-k-lists
+154	Trie	Implement Trie (Prefix Tree)	Medium	implement-trie-prefix-tree
+155	Trie	Word Break	Medium	word-break
+156	Trie	Design Add and Search Words Data Structure	Medium	design-add-and-search-words-data-structure
+157	Trie	Design In-Memory File System	Hard	design-in-memory-file-system
+158	Recursion	Permutations	Medium	permutations
+159	Recursion	Subsets	Medium	subsets
+160	Recursion	Letter Combinations of a Phone Number	Medium	letter-combinations-of-a-phone-number
+161	Recursion	Next Permutation	Medium	next-permutation
+162	Recursion	Generate Parentheses	Medium	generate-parentheses
+163	Recursion	N-Queens	Hard	n-queens
+164	Matrix	Spiral Matrix	Medium	spiral-matrix
+165	Matrix	Valid Sudoku	Medium	valid-sudoku
+166	Matrix	Rotate Image	Medium	rotate-image
+167	Matrix	Set Matrix Zeroes	Medium	set-matrix-zeroes
+168	Matrix	Sudoku Solver	Hard	sudoku-solver
+169	Queue	Design Hit Counter	Medium	design-hit-counter
