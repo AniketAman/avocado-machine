@@ -13,6 +13,22 @@ npm link
 
 Run the commands from this repository. `npm link` makes the `avocado` command available in your shell.
 
+## Start fresh after forking
+
+The repository includes the original learner's review history, solutions, and saved attempts. To see what a reset would affect, run:
+
+```sh
+avocado reset
+```
+
+Then reset every problem and language variant:
+
+```sh
+avocado reset --yes
+```
+
+This clears all SM-2 review history, replaces each `solution.ts` with its `solution.template.ts`, and deletes the files in `attempts/`. Problems shared across collections are reset once. Descriptions, tests, templates, and collection entries remain available. The changes are local to your fork; commit them if you want your fork to start from this clean state.
+
 ## Practice
 
 ```sh

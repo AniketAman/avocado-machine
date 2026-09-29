@@ -142,6 +142,68 @@ test('a collection reference shares the target files and review history', async 
   }
 });
 
+test('reset previews and clears each underlying problem once', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'avocado-reset-'));
+  try {
+    fs.mkdirSync(path.join(dir, 'src'));
+    fs.copyFileSync(fileURLToPath(new URL('../src/core.mjs', import.meta.url)), path.join(dir, 'src', 'core.mjs'));
+    const isolated = await import(pathToFileURL(path.join(dir, 'src', 'core.mjs')).href);
+    const original = isolated.addProblem('blind75', 'Two Sum');
+    const alias = path.join(dir, 'collections', 'grind75', '1-two-sum');
+    fs.mkdirSync(alias, {recursive: true});
+    const reference = {id: 1, title: 'Array: Two Sum (Easy)', ref: {collection: 'blind75', id: 1}};
+    fs.writeFileSync(path.join(alias, 'metadata.json'), JSON.stringify(reference, null, 2) + '\n');
+
+    isolated.gradeProblem('grind75', 1, 5, '2026-09-28');
+    const metadataPath = path.join(original.dir, 'metadata.json');
+    const metadata = JSON.parse(fs.readFileSync(metadataPath, 'utf8'));
+    metadata.variants.ts.notes = 'Keep this';
+    fs.writeFileSync(metadataPath, JSON.stringify(metadata, null, 2) + '\n');
+    const solution = path.join(original.dir, 'ts', 'solution.ts');
+    fs.writeFileSync(solution, 'export const answer = 42;\n');
+    const archiveDir = path.join(original.dir, 'ts', 'attempts');
+    fs.mkdirSync(archiveDir);
+    fs.writeFileSync(path.join(archiveDir, 'old.ts'), 'old attempt\n');
+
+    const before = fs.readFileSync(metadataPath, 'utf8');
+    assert.deepEqual(isolated.resetProgress(), {problems: 1, variants: 1, archives: 1});
+    assert.equal(fs.readFileSync(metadataPath, 'utf8'), before);
+    assert.equal(fs.readFileSync(solution, 'utf8'), 'export const answer = 42;\n');
+    assert.equal(fs.existsSync(archiveDir), true);
+
+    assert.deepEqual(isolated.resetProgress(true), {problems: 1, variants: 1, archives: 1});
+    const reset = JSON.parse(fs.readFileSync(metadataPath, 'utf8'));
+    assert.deepEqual(reset.variants.ts.sm2, isolated.newMetadata(1, 'Two Sum').variants.ts.sm2);
+    assert.equal(reset.variants.ts.notes, 'Keep this');
+    assert.equal(fs.readFileSync(solution, 'utf8'), fs.readFileSync(path.join(original.dir, 'ts', 'solution.template.ts'), 'utf8'));
+    assert.equal(fs.existsSync(archiveDir), false);
+    assert.deepEqual(JSON.parse(fs.readFileSync(path.join(alias, 'metadata.json'), 'utf8')), reference);
+    assert.deepEqual(isolated.resetProgress(), {problems: 1, variants: 1, archives: 0});
+  } finally {
+    fs.rmSync(dir, {recursive: true, force: true});
+  }
+});
+
+test('reset checks every starter before changing any problem', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'avocado-reset-missing-'));
+  try {
+    fs.mkdirSync(path.join(dir, 'src'));
+    fs.copyFileSync(fileURLToPath(new URL('../src/core.mjs', import.meta.url)), path.join(dir, 'src', 'core.mjs'));
+    const isolated = await import(pathToFileURL(path.join(dir, 'src', 'core.mjs')).href);
+    const first = isolated.addProblem('dsa', 'One');
+    const second = isolated.addProblem('dsa', 'Two');
+    isolated.gradeProblem('dsa', 1, 5, '2026-09-28');
+    const metadataPath = path.join(first.dir, 'metadata.json');
+    const before = fs.readFileSync(metadataPath, 'utf8');
+    fs.rmSync(path.join(second.dir, 'ts', 'solution.template.ts'));
+
+    assert.throws(() => isolated.resetProgress(true), /Missing starter template/);
+    assert.equal(fs.readFileSync(metadataPath, 'utf8'), before);
+  } finally {
+    fs.rmSync(dir, {recursive: true, force: true});
+  }
+});
+
 test('grindall follows the topic-grouped source and directly shares existing problems', () => {
   const base = fileURLToPath(new URL('../collections/grindall/', import.meta.url));
   const source = fs.readFileSync(path.join(base, 'source.tsv'), 'utf8').trim().split('\n').slice(1);

@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import {addProblem, gradeProblem, problems} from './core.mjs';
+import {addProblem, gradeProblem, problems, resetProgress} from './core.mjs';
 import {startTui} from './tui.mjs';
 
 function positiveCount(value) {
@@ -34,8 +34,18 @@ async function main(args) {
     console.log(`Created #${created.id} ${created.title} in ${created.dir}`);
     return;
   }
+  if (verb === 'reset') {
+    if (rest.length > 1 || (rest.length === 1 && rest[0] !== '--yes')) throw new Error('Usage: avocado reset [--yes]');
+    const apply = rest[0] === '--yes';
+    const result = resetProgress(apply);
+    const scope = `${result.problems} problems, ${result.variants} language variants, and ${result.archives} archived ${result.archives === 1 ? 'attempt' : 'attempts'}`;
+    console.log(apply
+      ? `Reset ${scope}.`
+      : `Would reset ${scope}. Run avocado reset --yes to clear review history, restore starter solutions, and delete archived attempts.`);
+    return;
+  }
   if (verb === 'help' || verb === '--help' || verb === '-h') {
-    console.log('avocado\navocado practice [collection] [count]\navocado new [collection] [count]\navocado review [collection] [count]\navocado done <collection> <number> <grade>\navocado add <collection> "Problem Title"');
+    console.log('avocado\navocado practice [collection] [count]\navocado new [collection] [count]\navocado review [collection] [count]\navocado done <collection> <number> <grade>\navocado add <collection> "Problem Title"\navocado reset [--yes]');
     return;
   }
   throw new Error(`Unknown command: ${verb}`);

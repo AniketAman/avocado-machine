@@ -44,3 +44,6 @@ The scheduling record for a language variant, including the information needed t
 
 **Solution archive**:
 A saved copy of a changed solution file from before a new practice attempt.
+
+**Practice reset**:
+The return of every language variant to a new problem state, with no recall history, a fresh solution file, and no solution archives.

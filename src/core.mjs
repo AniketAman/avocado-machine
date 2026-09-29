@@ -34,7 +34,11 @@ export function addDays(day, count) {
 }
 
 export function newMetadata(id, title) {
-  return {id, title, variants: {[defaultLanguage]: {runner, sm2: {repetitions: 0, easeFactor: 2.5, intervalDays: 0, dueDate: null, lastGrade: null, lastReviewedAt: null}}}};
+  return {id, title, variants: {[defaultLanguage]: {runner, sm2: newSm2()}}};
+}
+
+function newSm2() {
+  return {repetitions: 0, easeFactor: 2.5, intervalDays: 0, dueDate: null, lastGrade: null, lastReviewedAt: null};
 }
 
 export function collections() {
@@ -185,6 +189,46 @@ export function gradeProblem(collection, id, grade, today = localDate(), languag
   fs.writeFileSync(temp, JSON.stringify(metadata, null, 2) + '\n');
   fs.renameSync(temp, target);
   return {...problem, language, sm2};
+}
+
+export function resetProgress(apply = false) {
+  const seen = new Set();
+  const changes = [];
+  let variants = 0;
+  let archives = 0;
+
+  for (const collection of collections()) {
+    for (const problem of problems(collection)) {
+      if (seen.has(problem.dir)) continue;
+      seen.add(problem.dir);
+      const metadataPath = path.join(problem.dir, 'metadata.json');
+      const metadata = JSON.parse(fs.readFileSync(metadataPath, 'utf8'));
+      const files = [];
+      for (const language of Object.keys(metadata.variants)) {
+        const {dir, source, target} = languageFiles(problem, language);
+        if (!fs.existsSync(source)) throw new Error(`Missing starter template: ${source}`);
+        const archiveDir = path.join(dir, 'attempts');
+        const archived = fs.existsSync(archiveDir) ? fs.readdirSync(archiveDir).length : 0;
+        archives += archived;
+        variants++;
+        files.push({source, target, archiveDir});
+      }
+      changes.push({metadataPath, metadata, files});
+    }
+  }
+
+  if (apply) {
+    for (const {metadataPath, metadata, files} of changes) {
+      for (const {source, target, archiveDir} of files) {
+        fs.copyFileSync(source, target);
+        fs.rmSync(archiveDir, {recursive: true, force: true});
+      }
+      for (const variant of Object.values(metadata.variants)) variant.sm2 = newSm2();
+      fs.writeFileSync(metadataPath, JSON.stringify(metadata, null, 2) + '\n');
+    }
+  }
+
+  return {problems: changes.length, variants, archives};
 }
 
 export function addProblem(collection, title) {
