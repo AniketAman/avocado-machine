@@ -2,22 +2,26 @@ import React, {useState} from 'react';
 import {Box, Text, render, useApp, useInput, useWindowSize} from 'ink';
 import fs from 'node:fs';
 import path from 'node:path';
-import {marked} from 'marked';
+import {Marked} from 'marked';
 import {markedTerminal} from 'marked-terminal';
 import {collections, gradeProblem, isDue, localDate, problems, runTests, searchGroups, solutionPath, startProblem, status, suggestions, testCommand} from './core.mjs';
 
-marked.use(markedTerminal({showSectionPrefix: false}));
-
 const h = React.createElement;
 
-function renderMarkdown(content, maxLines) {
-  if (!content) return 'Select a problem to see its description.';
-  const rendered = marked.parse(content).trim();
-  const lines = rendered.split('\n');
-  if (maxLines && lines.length > maxLines) {
-    return lines.slice(0, maxLines).join('\n');
+export function renderMarkdownLines(content, maxLines, width = 80) {
+  if (!content) return ['Select a problem to see its description.'];
+  try {
+    const m = new Marked().use(markedTerminal({
+      width: Math.max(20, width),
+      reflowText: true,
+      showSectionPrefix: false
+    }));
+    const rendered = m.parse(content).trim();
+    const lines = rendered.split('\n');
+    return lines.slice(0, maxLines);
+  } catch {
+    return content.split('\n').slice(0, maxLines);
   }
-  return rendered;
 }
 
 function formatBadge(item, today) {
@@ -38,7 +42,7 @@ function renderItemRow(item, isSelected, today, maxTitleWidth) {
   const num = String(item.id).padStart(3, ' ');
   let title = item.title;
   if (title.length > maxTitleWidth) {
-    title = title.slice(0, maxTitleWidth - 1) + '…';
+    title = title.slice(0, Math.max(1, maxTitleWidth - 1)) + '…';
   } else {
     title = title.padEnd(maxTitleWidth, ' ');
   }
@@ -46,15 +50,17 @@ function renderItemRow(item, isSelected, today, maxTitleWidth) {
   return h(Box, {
     key: `${item.collection}-${item.id}`,
     flexDirection: 'row',
+    flexShrink: 0,
     backgroundColor: isSelected ? 'cyan' : undefined
   },
-    h(Text, {color: isSelected ? 'black' : 'cyan', bold: isSelected}, `${cursor} ${num} `),
-    h(Text, {color: isSelected ? 'black' : undefined, dimColor: !isSelected, bold: isSelected}, title),
+    h(Text, {color: isSelected ? 'black' : 'cyan', bold: isSelected, wrap: 'truncate-end'}, `${cursor} ${num} `),
+    h(Text, {color: isSelected ? 'black' : undefined, dimColor: !isSelected, bold: isSelected, wrap: 'truncate-end'}, title),
     h(Box, {flexGrow: 1}),
     h(Text, {
       color: isSelected ? 'black' : badge.color === 'dim' ? undefined : badge.color,
       dimColor: !isSelected && badge.color === 'dim',
-      bold: isSelected || badge.color !== 'dim'
+      bold: isSelected || badge.color !== 'dim',
+      wrap: 'truncate-end'
     }, `[${badge.text}]`)
   );
 }
@@ -70,8 +76,8 @@ function renderPracticeList(groups, highlightedId, safeIndex, today, capacity, m
 
   const totalLines = activeSections.reduce((acc, s) => acc + 1 + s.items.length, 0);
   if (totalLines <= capacity) {
-    return activeSections.map(s => h(Box, {key: s.title, flexDirection: 'column', marginBottom: 1},
-      h(Text, {bold: true, color: s.color}, ` ${s.title} (${s.items.length}) `.padEnd(paneWidth, '─')),
+    return activeSections.map(s => h(Box, {key: s.title, flexDirection: 'column'},
+      h(Text, {bold: true, color: s.color, wrap: 'truncate-end'}, ` ${s.title} (${s.items.length}) `.padEnd(paneWidth, '─')),
       ...s.items.map(item => renderItemRow(item, item.id === highlightedId, today, maxTitleWidth))));
   }
 
@@ -82,17 +88,17 @@ function renderPracticeList(groups, highlightedId, safeIndex, today, capacity, m
 
   function buildElements(s, e) {
     const res = [];
-    if (s > 0) res.push(h(Text, {key: 'scroll-up', dimColor: true}, `▲ ${s} more above`));
+    if (s > 0) res.push(h(Text, {key: 'scroll-up', dimColor: true, wrap: 'truncate-end'}, `▲ ${s} more above`));
     let lastSection = null;
     for (let i = s; i < e; i++) {
       const item = allRows[i];
       if (item.sectionTitle !== lastSection) {
         lastSection = item.sectionTitle;
-        res.push(h(Text, {key: `sec-${item.sectionTitle}`, bold: true, color: item.sectionColor}, ` ${item.sectionTitle} `.padEnd(paneWidth, '─')));
+        res.push(h(Text, {key: `sec-${item.sectionTitle}`, bold: true, color: item.sectionColor, wrap: 'truncate-end'}, ` ${item.sectionTitle} `.padEnd(paneWidth, '─')));
       }
       res.push(renderItemRow(item, item.id === highlightedId, today, maxTitleWidth));
     }
-    if (e < allRows.length) res.push(h(Text, {key: 'scroll-down', dimColor: true}, `▼ ${allRows.length - e} more below`));
+    if (e < allRows.length) res.push(h(Text, {key: 'scroll-down', dimColor: true, wrap: 'truncate-end'}, `▼ ${allRows.length - e} more below`));
     return res;
   }
 
@@ -121,32 +127,34 @@ function renderCollectionsList(names, selectedIndex, capacity) {
   const totalNeeded = 1 + names.length;
   if (totalNeeded <= capacity) {
     return [
-      h(Text, {key: 'title', bold: true, color: 'cyan'}, 'Collections'),
+      h(Text, {key: 'title', bold: true, color: 'cyan', wrap: 'truncate-end'}, 'Collections'),
       ...names.map((name, index) => h(Box, {
         key: name,
         flexDirection: 'row',
+        flexShrink: 0,
         backgroundColor: index === selectedIndex ? 'cyan' : undefined
       },
-        h(Text, {color: index === selectedIndex ? 'black' : 'cyan', bold: true}, `${index === selectedIndex ? '›' : ' '} `),
-        h(Text, {color: index === selectedIndex ? 'black' : undefined, bold: index === selectedIndex}, name)))
+        h(Text, {color: index === selectedIndex ? 'black' : 'cyan', bold: true, wrap: 'truncate-end'}, `${index === selectedIndex ? '›' : ' '} `),
+        h(Text, {color: index === selectedIndex ? 'black' : undefined, bold: index === selectedIndex, wrap: 'truncate-end'}, name)))
     ];
   }
   const windowSize = Math.max(1, capacity - 3);
   const start = Math.max(0, Math.min(selectedIndex - Math.floor(windowSize / 2), Math.max(0, names.length - windowSize)));
   const end = Math.min(names.length, start + windowSize);
-  const elements = [h(Text, {key: 'title', bold: true, color: 'cyan'}, 'Collections')];
-  if (start > 0) elements.push(h(Text, {key: 'scroll-up', dimColor: true}, `▲ ${start} more above`));
+  const elements = [h(Text, {key: 'title', bold: true, color: 'cyan', wrap: 'truncate-end'}, 'Collections')];
+  if (start > 0) elements.push(h(Text, {key: 'scroll-up', dimColor: true, wrap: 'truncate-end'}, `▲ ${start} more above`));
   for (let i = start; i < end; i++) {
     const name = names[i];
     elements.push(h(Box, {
       key: name,
       flexDirection: 'row',
+      flexShrink: 0,
       backgroundColor: i === selectedIndex ? 'cyan' : undefined
     },
-      h(Text, {color: i === selectedIndex ? 'black' : 'cyan', bold: true}, `${i === selectedIndex ? '›' : ' '} `),
-      h(Text, {color: i === selectedIndex ? 'black' : undefined, bold: i === selectedIndex}, name)));
+      h(Text, {color: i === selectedIndex ? 'black' : 'cyan', bold: true, wrap: 'truncate-end'}, `${i === selectedIndex ? '›' : ' '} `),
+      h(Text, {color: i === selectedIndex ? 'black' : undefined, bold: i === selectedIndex, wrap: 'truncate-end'}, name)));
   }
-  if (end < names.length) elements.push(h(Text, {key: 'scroll-down', dimColor: true}, `▼ ${names.length - end} more below`));
+  if (end < names.length) elements.push(h(Text, {key: 'scroll-down', dimColor: true, wrap: 'truncate-end'}, `▼ ${names.length - end} more below`));
   return elements;
 }
 
@@ -317,14 +325,16 @@ function App({initialCollection, initialCount, initialMode = 'practice'}) {
   const footerHeight = (mode ? 1 : shortcutLines) + messageLines;
   const bodyHeight = Math.max(4, termRows - 2 - testBoxHeight - footerHeight);
   const innerCapacity = Math.max(2, bodyHeight - 2);
-  const descLines = Math.max(1, innerCapacity - 4);
   const leftPaneWidth = Math.min(42, Math.max(30, Math.floor((termColumns - 3) * 0.35)));
+  const rightPaneWidth = Math.max(20, (termColumns - 2) - leftPaneWidth - 1);
   const paneInnerWidth = leftPaneWidth - 4;
-  const maxTitleWidth = Math.max(10, paneInnerWidth - 14);
+  const rightPaneInnerWidth = rightPaneWidth - 4;
+  const maxTitleWidth = Math.max(8, paneInnerWidth - 16);
+  const descLines = Math.max(1, bodyHeight - 6);
   const rawDesc = highlighted && fs.existsSync(path.join(highlighted.dir, 'description.md'))
     ? fs.readFileSync(path.join(highlighted.dir, 'description.md'), 'utf8').trim()
     : '';
-  const preview = renderMarkdown(rawDesc, descLines);
+  const previewLines = renderMarkdownLines(rawDesc, descLines, rightPaneInnerWidth);
 
   const listLabel = practiceMode === 'practice'
     ? count === undefined ? '3 due + 3 new' : `${count} suggestions`
@@ -345,16 +355,16 @@ function App({initialCollection, initialCount, initialMode = 'practice'}) {
     screen === 'collections' ? h(Box, {flexDirection: 'column', height: bodyHeight, borderStyle: 'round', borderColor: 'cyan', paddingX: 1},
       ...renderCollectionsList(names, selectedIndex, innerCapacity)) : null,
     screen === 'practice' ? h(Box, {flexDirection: 'row', gap: 1, height: bodyHeight},
-      h(Box, {flexDirection: 'column', width: leftPaneWidth, height: bodyHeight, borderStyle: 'round', borderColor: 'green', paddingX: 1},
+      h(Box, {flexDirection: 'column', width: leftPaneWidth, flexShrink: 0, height: bodyHeight, borderStyle: 'round', borderColor: 'green', paddingX: 1},
         renderPracticeList(groups, highlighted?.id, safeIndex, today, innerCapacity, maxTitleWidth, paneInnerWidth),
         rows.length === 0 ? h(Text, {dimColor: true}, query ? 'No matching problems' : 'No problems to practice') : null),
-      h(Box, {flexDirection: 'column', flexGrow: 1, height: bodyHeight, borderStyle: 'round', borderColor: 'cyan', paddingX: 1},
-        h(Text, {bold: true, color: 'cyan'}, highlighted ? `#${highlighted.id} ${highlighted.title}` : 'Preview'),
-        highlighted ? h(Text, {dimColor: true}, `${status(highlighted, today)} · last grade ${highlighted.sm2.lastGrade ?? '—'}`) : null,
+      h(Box, {flexDirection: 'column', width: rightPaneWidth, flexShrink: 0, height: bodyHeight, borderStyle: 'round', borderColor: 'cyan', paddingX: 1},
+        h(Text, {bold: true, color: 'cyan', wrap: 'truncate-end'}, highlighted ? `#${highlighted.id} ${highlighted.title}` : 'Preview'),
+        highlighted ? h(Text, {dimColor: true, wrap: 'truncate-end'}, `${status(highlighted, today)} · last grade ${highlighted.sm2.lastGrade ?? '—'}`) : null,
         h(Box, {flexGrow: 1, flexDirection: 'column'},
-          h(Text, null, preview)),
-        highlighted ? h(Text, {color: 'blue'}, testCommand(highlighted)) : null,
-        highlighted ? h(Text, {color: 'green'}, path.relative(process.cwd(), solutionPath(highlighted))) : null)) : null,
+          ...previewLines.map((line, idx) => h(Text, {key: idx, wrap: 'truncate-end'}, line))),
+        highlighted ? h(Text, {color: 'blue', wrap: 'truncate-end'}, testCommand(highlighted)) : null,
+        highlighted ? h(Text, {color: 'green', wrap: 'truncate-end'}, path.relative(process.cwd(), solutionPath(highlighted))) : null)) : null,
     output ? h(Box, {flexDirection: 'column', height: testBoxHeight, borderStyle: 'round', borderColor: testResult.code === 0 ? 'green' : 'red', paddingX: 1},
       h(Text, {bold: true}, `Test output · exit ${testResult.code} · press x to clear`),
       h(Text, null, output.split('\n').slice(-Math.max(1, testBoxHeight - 3)).join('\n'))) : null,
