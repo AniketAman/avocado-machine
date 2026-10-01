@@ -2,9 +2,23 @@ import React, {useState} from 'react';
 import {Box, Text, render, useApp, useInput, useWindowSize} from 'ink';
 import fs from 'node:fs';
 import path from 'node:path';
+import {marked} from 'marked';
+import {markedTerminal} from 'marked-terminal';
 import {collections, gradeProblem, isDue, localDate, problems, runTests, searchGroups, solutionPath, startProblem, status, suggestions, testCommand} from './core.mjs';
 
+marked.use(markedTerminal({showSectionPrefix: false}));
+
 const h = React.createElement;
+
+function renderMarkdown(content, maxLines) {
+  if (!content) return 'Select a problem to see its description.';
+  const rendered = marked.parse(content).trim();
+  const lines = rendered.split('\n');
+  if (maxLines && lines.length > maxLines) {
+    return lines.slice(0, maxLines).join('\n');
+  }
+  return rendered;
+}
 
 function renderPracticeList(groups, highlightedId, safeIndex, today, capacity) {
   const activeSections = [
@@ -255,7 +269,10 @@ function App({initialCollection, initialCount, initialMode = 'practice'}) {
   const bodyHeight = Math.max(4, termRows - 2 - testBoxHeight - footerHeight);
   const innerCapacity = Math.max(2, bodyHeight - 2);
   const descLines = Math.max(1, innerCapacity - 4);
-  const preview = highlighted ? fs.readFileSync(path.join(highlighted.dir, 'description.md'), 'utf8').trim().split('\n').slice(0, descLines).join('\n') : '';
+  const rawDesc = highlighted && fs.existsSync(path.join(highlighted.dir, 'description.md'))
+    ? fs.readFileSync(path.join(highlighted.dir, 'description.md'), 'utf8').trim()
+    : '';
+  const preview = renderMarkdown(rawDesc, descLines);
 
   const listLabel = practiceMode === 'practice'
     ? count === undefined ? '3 due + 3 new' : `${count} suggestions`
@@ -283,7 +300,7 @@ function App({initialCollection, initialCount, initialMode = 'practice'}) {
         h(Text, {bold: true, color: 'cyan'}, highlighted ? `#${highlighted.id} ${highlighted.title}` : 'Preview'),
         highlighted ? h(Text, {dimColor: true}, `${status(highlighted, today)} · last grade ${highlighted.sm2.lastGrade ?? '—'}`) : null,
         h(Box, {flexGrow: 1, flexDirection: 'column'},
-          h(Text, null, preview || 'Select a problem to see its description.')),
+          h(Text, null, preview)),
         highlighted ? h(Text, {color: 'blue'}, testCommand(highlighted)) : null,
         highlighted ? h(Text, {color: 'green'}, path.relative(process.cwd(), solutionPath(highlighted))) : null)) : null,
     output ? h(Box, {flexDirection: 'column', height: testBoxHeight, borderStyle: 'round', borderColor: testResult.code === 0 ? 'green' : 'red', paddingX: 1},
