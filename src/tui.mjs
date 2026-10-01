@@ -25,12 +25,11 @@ function formatBadge(item, today) {
     return {text: 'NEW', color: 'green'};
   }
   const due = item.sm2.dueDate && item.sm2.dueDate <= today;
-  const gradeStr = item.sm2.lastGrade !== null ? ` ${item.sm2.lastGrade}★` : '';
   if (due) {
-    return {text: `DUE${gradeStr}`, color: 'yellow'};
+    return {text: item.sm2.lastGrade !== null ? `DUE·${item.sm2.lastGrade}` : 'DUE', color: 'yellow'};
   }
   const dateStr = item.sm2.dueDate?.slice(5) || 'sched';
-  return {text: `${dateStr}${gradeStr}`, color: 'dim'};
+  return {text: item.sm2.lastGrade !== null ? `${dateStr}·${item.sm2.lastGrade}` : dateStr, color: 'dim'};
 }
 
 function renderItemRow(item, isSelected, today, maxTitleWidth) {
@@ -49,8 +48,8 @@ function renderItemRow(item, isSelected, today, maxTitleWidth) {
     flexDirection: 'row',
     backgroundColor: isSelected ? 'cyan' : undefined
   },
-    h(Text, {color: isSelected ? 'black' : 'cyan', bold: true}, `${cursor} ${num} `),
-    h(Text, {color: isSelected ? 'black' : undefined, bold: isSelected}, title),
+    h(Text, {color: isSelected ? 'black' : 'cyan', bold: isSelected}, `${cursor} ${num} `),
+    h(Text, {color: isSelected ? 'black' : undefined, dimColor: !isSelected, bold: isSelected}, title),
     h(Box, {flexGrow: 1}),
     h(Text, {
       color: isSelected ? 'black' : badge.color === 'dim' ? undefined : badge.color,
@@ -62,9 +61,9 @@ function renderItemRow(item, isSelected, today, maxTitleWidth) {
 
 function renderPracticeList(groups, highlightedId, safeIndex, today, capacity, maxTitleWidth, paneWidth) {
   const activeSections = [
-    {title: 'Due reviews', items: groups.due, color: 'yellow'},
-    {title: 'New problems', items: groups.fresh, color: 'green'},
-    {title: 'In current collection', items: groups.current, color: 'cyan'}
+    {title: 'Due', items: groups.due, color: 'yellow'},
+    {title: 'New', items: groups.fresh, color: 'green'},
+    {title: 'Collection', items: groups.current, color: 'cyan'}
   ].filter(s => s.items.length > 0);
 
   if (!activeSections.length) return null;
@@ -319,8 +318,9 @@ function App({initialCollection, initialCount, initialMode = 'practice'}) {
   const bodyHeight = Math.max(4, termRows - 2 - testBoxHeight - footerHeight);
   const innerCapacity = Math.max(2, bodyHeight - 2);
   const descLines = Math.max(1, innerCapacity - 4);
-  const paneInnerWidth = Math.max(20, Math.floor((termColumns - 3) / 2) - 2);
-  const maxTitleWidth = Math.max(12, paneInnerWidth - 16);
+  const leftPaneWidth = Math.min(42, Math.max(30, Math.floor((termColumns - 3) * 0.35)));
+  const paneInnerWidth = leftPaneWidth - 4;
+  const maxTitleWidth = Math.max(10, paneInnerWidth - 14);
   const rawDesc = highlighted && fs.existsSync(path.join(highlighted.dir, 'description.md'))
     ? fs.readFileSync(path.join(highlighted.dir, 'description.md'), 'utf8').trim()
     : '';
@@ -345,10 +345,10 @@ function App({initialCollection, initialCount, initialMode = 'practice'}) {
     screen === 'collections' ? h(Box, {flexDirection: 'column', height: bodyHeight, borderStyle: 'round', borderColor: 'cyan', paddingX: 1},
       ...renderCollectionsList(names, selectedIndex, innerCapacity)) : null,
     screen === 'practice' ? h(Box, {flexDirection: 'row', gap: 1, height: bodyHeight},
-      h(Box, {flexDirection: 'column', flexGrow: 1, flexBasis: 0, height: bodyHeight, borderStyle: 'round', borderColor: 'green', paddingX: 1},
+      h(Box, {flexDirection: 'column', width: leftPaneWidth, height: bodyHeight, borderStyle: 'round', borderColor: 'green', paddingX: 1},
         renderPracticeList(groups, highlighted?.id, safeIndex, today, innerCapacity, maxTitleWidth, paneInnerWidth),
         rows.length === 0 ? h(Text, {dimColor: true}, query ? 'No matching problems' : 'No problems to practice') : null),
-      h(Box, {flexDirection: 'column', flexGrow: 1, flexBasis: 0, height: bodyHeight, borderStyle: 'round', borderColor: 'cyan', paddingX: 1},
+      h(Box, {flexDirection: 'column', flexGrow: 1, height: bodyHeight, borderStyle: 'round', borderColor: 'cyan', paddingX: 1},
         h(Text, {bold: true, color: 'cyan'}, highlighted ? `#${highlighted.id} ${highlighted.title}` : 'Preview'),
         highlighted ? h(Text, {dimColor: true}, `${status(highlighted, today)} · last grade ${highlighted.sm2.lastGrade ?? '—'}`) : null,
         h(Box, {flexGrow: 1, flexDirection: 'column'},
