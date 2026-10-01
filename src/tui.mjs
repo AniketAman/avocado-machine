@@ -20,7 +20,47 @@ function renderMarkdown(content, maxLines) {
   return rendered;
 }
 
-function renderPracticeList(groups, highlightedId, safeIndex, today, capacity) {
+function formatBadge(item, today) {
+  if (item.sm2.lastGrade === null) {
+    return {text: 'NEW', color: 'green'};
+  }
+  const due = item.sm2.dueDate && item.sm2.dueDate <= today;
+  const gradeStr = item.sm2.lastGrade !== null ? ` ${item.sm2.lastGrade}★` : '';
+  if (due) {
+    return {text: `DUE${gradeStr}`, color: 'yellow'};
+  }
+  const dateStr = item.sm2.dueDate?.slice(5) || 'sched';
+  return {text: `${dateStr}${gradeStr}`, color: 'dim'};
+}
+
+function renderItemRow(item, isSelected, today, maxTitleWidth) {
+  const badge = formatBadge(item, today);
+  const cursor = isSelected ? '›' : ' ';
+  const num = String(item.id).padStart(3, ' ');
+  let title = item.title;
+  if (title.length > maxTitleWidth) {
+    title = title.slice(0, maxTitleWidth - 1) + '…';
+  } else {
+    title = title.padEnd(maxTitleWidth, ' ');
+  }
+
+  return h(Box, {
+    key: `${item.collection}-${item.id}`,
+    flexDirection: 'row',
+    backgroundColor: isSelected ? 'cyan' : undefined
+  },
+    h(Text, {color: isSelected ? 'black' : 'cyan', bold: true}, `${cursor} ${num} `),
+    h(Text, {color: isSelected ? 'black' : undefined, bold: isSelected}, title),
+    h(Box, {flexGrow: 1}),
+    h(Text, {
+      color: isSelected ? 'black' : badge.color === 'dim' ? undefined : badge.color,
+      dimColor: !isSelected && badge.color === 'dim',
+      bold: isSelected || badge.color !== 'dim'
+    }, `[${badge.text}]`)
+  );
+}
+
+function renderPracticeList(groups, highlightedId, safeIndex, today, capacity, maxTitleWidth, paneWidth) {
   const activeSections = [
     {title: 'Due reviews', items: groups.due, color: 'yellow'},
     {title: 'New problems', items: groups.fresh, color: 'green'},
@@ -32,9 +72,8 @@ function renderPracticeList(groups, highlightedId, safeIndex, today, capacity) {
   const totalLines = activeSections.reduce((acc, s) => acc + 1 + s.items.length, 0);
   if (totalLines <= capacity) {
     return activeSections.map(s => h(Box, {key: s.title, flexDirection: 'column', marginBottom: 1},
-      h(Text, {bold: true, color: s.color}, `${s.title} (${s.items.length})`),
-      ...s.items.map(item => h(Text, {key: `${item.collection}-${item.id}`, color: item.id === highlightedId ? 'black' : undefined, backgroundColor: item.id === highlightedId ? 'cyan' : undefined},
-        `${item.id === highlightedId ? '›' : ' '} ${String(item.id).padStart(3)}  ${item.title}  ·  ${status(item, today)}${item.sm2.lastGrade === null ? '' : `  ·  last ${item.sm2.lastGrade}`}`))));
+      h(Text, {bold: true, color: s.color}, ` ${s.title} (${s.items.length}) `.padEnd(paneWidth, '─')),
+      ...s.items.map(item => renderItemRow(item, item.id === highlightedId, today, maxTitleWidth))));
   }
 
   const allRows = activeSections.flatMap(s => s.items.map(item => ({...item, sectionTitle: s.title, sectionColor: s.color})));
@@ -50,10 +89,9 @@ function renderPracticeList(groups, highlightedId, safeIndex, today, capacity) {
       const item = allRows[i];
       if (item.sectionTitle !== lastSection) {
         lastSection = item.sectionTitle;
-        res.push(h(Text, {key: `sec-${item.sectionTitle}`, bold: true, color: item.sectionColor}, item.sectionTitle));
+        res.push(h(Text, {key: `sec-${item.sectionTitle}`, bold: true, color: item.sectionColor}, ` ${item.sectionTitle} `.padEnd(paneWidth, '─')));
       }
-      res.push(h(Text, {key: `${item.collection}-${item.id}`, color: item.id === highlightedId ? 'black' : undefined, backgroundColor: item.id === highlightedId ? 'cyan' : undefined},
-        `${item.id === highlightedId ? '›' : ' '} ${String(item.id).padStart(3)}  ${item.title}  ·  ${status(item, today)}${item.sm2.lastGrade === null ? '' : `  ·  last ${item.sm2.lastGrade}`}`));
+      res.push(renderItemRow(item, item.id === highlightedId, today, maxTitleWidth));
     }
     if (e < allRows.length) res.push(h(Text, {key: 'scroll-down', dimColor: true}, `▼ ${allRows.length - e} more below`));
     return res;
@@ -85,7 +123,13 @@ function renderCollectionsList(names, selectedIndex, capacity) {
   if (totalNeeded <= capacity) {
     return [
       h(Text, {key: 'title', bold: true, color: 'cyan'}, 'Collections'),
-      ...names.map((name, index) => h(Text, {key: name, color: index === selectedIndex ? 'black' : undefined, backgroundColor: index === selectedIndex ? 'cyan' : undefined}, `${index === selectedIndex ? '›' : ' '} ${name}`))
+      ...names.map((name, index) => h(Box, {
+        key: name,
+        flexDirection: 'row',
+        backgroundColor: index === selectedIndex ? 'cyan' : undefined
+      },
+        h(Text, {color: index === selectedIndex ? 'black' : 'cyan', bold: true}, `${index === selectedIndex ? '›' : ' '} `),
+        h(Text, {color: index === selectedIndex ? 'black' : undefined, bold: index === selectedIndex}, name)))
     ];
   }
   const windowSize = Math.max(1, capacity - 3);
@@ -95,7 +139,13 @@ function renderCollectionsList(names, selectedIndex, capacity) {
   if (start > 0) elements.push(h(Text, {key: 'scroll-up', dimColor: true}, `▲ ${start} more above`));
   for (let i = start; i < end; i++) {
     const name = names[i];
-    elements.push(h(Text, {key: name, color: i === selectedIndex ? 'black' : undefined, backgroundColor: i === selectedIndex ? 'cyan' : undefined}, `${i === selectedIndex ? '›' : ' '} ${name}`));
+    elements.push(h(Box, {
+      key: name,
+      flexDirection: 'row',
+      backgroundColor: i === selectedIndex ? 'cyan' : undefined
+    },
+      h(Text, {color: i === selectedIndex ? 'black' : 'cyan', bold: true}, `${i === selectedIndex ? '›' : ' '} `),
+      h(Text, {color: i === selectedIndex ? 'black' : undefined, bold: i === selectedIndex}, name)));
   }
   if (end < names.length) elements.push(h(Text, {key: 'scroll-down', dimColor: true}, `▼ ${names.length - end} more below`));
   return elements;
@@ -269,6 +319,8 @@ function App({initialCollection, initialCount, initialMode = 'practice'}) {
   const bodyHeight = Math.max(4, termRows - 2 - testBoxHeight - footerHeight);
   const innerCapacity = Math.max(2, bodyHeight - 2);
   const descLines = Math.max(1, innerCapacity - 4);
+  const paneInnerWidth = Math.max(20, Math.floor((termColumns - 3) / 2) - 2);
+  const maxTitleWidth = Math.max(12, paneInnerWidth - 16);
   const rawDesc = highlighted && fs.existsSync(path.join(highlighted.dir, 'description.md'))
     ? fs.readFileSync(path.join(highlighted.dir, 'description.md'), 'utf8').trim()
     : '';
@@ -294,7 +346,7 @@ function App({initialCollection, initialCount, initialMode = 'practice'}) {
       ...renderCollectionsList(names, selectedIndex, innerCapacity)) : null,
     screen === 'practice' ? h(Box, {flexDirection: 'row', gap: 1, height: bodyHeight},
       h(Box, {flexDirection: 'column', flexGrow: 1, flexBasis: 0, height: bodyHeight, borderStyle: 'round', borderColor: 'green', paddingX: 1},
-        renderPracticeList(groups, highlighted?.id, safeIndex, today, innerCapacity),
+        renderPracticeList(groups, highlighted?.id, safeIndex, today, innerCapacity, maxTitleWidth, paneInnerWidth),
         rows.length === 0 ? h(Text, {dimColor: true}, query ? 'No matching problems' : 'No problems to practice') : null),
       h(Box, {flexDirection: 'column', flexGrow: 1, flexBasis: 0, height: bodyHeight, borderStyle: 'round', borderColor: 'cyan', paddingX: 1},
         h(Text, {bold: true, color: 'cyan'}, highlighted ? `#${highlighted.id} ${highlighted.title}` : 'Preview'),
