@@ -66,6 +66,11 @@ function renderItemRow(item, isSelected, today, maxTitleWidth) {
   );
 }
 
+function renderSectionHeader(title, count, color, paneWidth, key) {
+  const label = count !== undefined ? ` ${title} (${count}) ` : ` ${title} `;
+  return h(Text, {key: key ?? `sec-${title}`, bold: true, color, wrap: 'truncate-end'}, label.padEnd(paneWidth, '─'));
+}
+
 function renderPracticeList(groups, highlightedId, safeIndex, today, capacity, maxTitleWidth, paneWidth) {
   const activeSections = [
     {title: 'Due', items: groups.due, color: 'yellow'},
@@ -78,11 +83,11 @@ function renderPracticeList(groups, highlightedId, safeIndex, today, capacity, m
   const totalLines = activeSections.reduce((acc, s) => acc + 1 + s.items.length, 0);
   if (totalLines <= capacity) {
     return activeSections.map(s => h(Box, {key: s.title, flexDirection: 'column'},
-      h(Text, {bold: true, color: s.color, wrap: 'truncate-end'}, ` ${s.title} (${s.items.length}) `.padEnd(paneWidth, '─')),
+      renderSectionHeader(s.title, s.items.length, s.color, paneWidth),
       ...s.items.map(item => renderItemRow(item, item.id === highlightedId, today, maxTitleWidth))));
   }
 
-  const allRows = activeSections.flatMap(s => s.items.map(item => ({...item, sectionTitle: s.title, sectionColor: s.color})));
+  const allRows = activeSections.flatMap(s => s.items.map(item => ({...item, sectionTitle: s.title, sectionColor: s.color, sectionCount: s.items.length})));
   const windowSize = Math.max(1, capacity - 2);
   let start = Math.max(0, Math.min(safeIndex - Math.floor(windowSize / 2), Math.max(0, allRows.length - windowSize)));
   let end = Math.min(allRows.length, start + windowSize);
@@ -95,7 +100,7 @@ function renderPracticeList(groups, highlightedId, safeIndex, today, capacity, m
       const item = allRows[i];
       if (item.sectionTitle !== lastSection) {
         lastSection = item.sectionTitle;
-        res.push(h(Text, {key: `sec-${item.sectionTitle}`, bold: true, color: item.sectionColor, wrap: 'truncate-end'}, ` ${item.sectionTitle} `.padEnd(paneWidth, '─')));
+        res.push(renderSectionHeader(item.sectionTitle, item.sectionCount, item.sectionColor, paneWidth, `sec-${item.sectionTitle}`));
       }
       res.push(renderItemRow(item, item.id === highlightedId, today, maxTitleWidth));
     }
@@ -112,12 +117,62 @@ function renderPracticeList(groups, highlightedId, safeIndex, today, capacity, m
   return elements;
 }
 
+export const practiceShortcuts = [
+  ['↑↓', 'navigate'],
+  ['Enter', 'path'],
+  ['e', 'edit'],
+  ['t', 'test'],
+  ['a', 'reset attempt'],
+  ['x', 'clear output'],
+  ['s', 'search'],
+  ['c', 'clear search'],
+  ['/', 'command'],
+  ['Esc', 'collections'],
+  ['q', 'quit']
+];
+
+export const generalShortcuts = [
+  ['↑↓', 'navigate'],
+  ['Enter', 'select'],
+  ['/', 'command'],
+  ['q', 'quit']
+];
+
+export function calculateShortcutLines(items, availWidth) {
+  if (!items.length) return 0;
+  let lines = 1;
+  let currentWidth = 0;
+  for (let i = 0; i < items.length; i++) {
+    const [key, label] = items[i];
+    const itemLen = key.length + 3 + label.length + (i < items.length - 1 ? 2 : 0);
+    if (currentWidth + itemLen > availWidth && currentWidth > 0) {
+      lines++;
+      currentWidth = itemLen;
+    } else {
+      currentWidth += itemLen;
+    }
+  }
+  return lines;
+}
+
 function renderShortcuts(items) {
   return h(Box, {flexDirection: 'row', flexWrap: 'wrap'},
     ...items.map(([key, label], i) => h(Text, {key: `${key}-${label}`},
       h(Text, {bold: true, color: 'cyan'}, `[${key}]`),
       h(Text, {dimColor: true}, ` ${label}${i < items.length - 1 ? '  ' : ''}`)
     ))
+  );
+}
+
+function renderCollectionRow(name, isSelected) {
+  return h(Box, {
+    key: name,
+    flexDirection: 'row',
+    flexShrink: 0,
+    backgroundColor: isSelected ? 'cyan' : undefined
+  },
+    h(Text, {color: isSelected ? 'black' : 'cyan', bold: true, wrap: 'truncate-end'}, `${isSelected ? '›' : ' '} `),
+    h(Text, {color: isSelected ? 'black' : undefined, bold: isSelected, wrap: 'truncate-end'}, name)
   );
 }
 
@@ -129,14 +184,7 @@ function renderCollectionsList(names, selectedIndex, capacity) {
   if (totalNeeded <= capacity) {
     return [
       h(Text, {key: 'title', bold: true, color: 'cyan', wrap: 'truncate-end'}, 'Collections'),
-      ...names.map((name, index) => h(Box, {
-        key: name,
-        flexDirection: 'row',
-        flexShrink: 0,
-        backgroundColor: index === selectedIndex ? 'cyan' : undefined
-      },
-        h(Text, {color: index === selectedIndex ? 'black' : 'cyan', bold: true, wrap: 'truncate-end'}, `${index === selectedIndex ? '›' : ' '} `),
-        h(Text, {color: index === selectedIndex ? 'black' : undefined, bold: index === selectedIndex, wrap: 'truncate-end'}, name)))
+      ...names.map((name, index) => renderCollectionRow(name, index === selectedIndex))
     ];
   }
   const windowSize = Math.max(1, capacity - 3);
@@ -145,15 +193,7 @@ function renderCollectionsList(names, selectedIndex, capacity) {
   const elements = [h(Text, {key: 'title', bold: true, color: 'cyan', wrap: 'truncate-end'}, 'Collections')];
   if (start > 0) elements.push(h(Text, {key: 'scroll-up', dimColor: true, wrap: 'truncate-end'}, `▲ ${start} more above`));
   for (let i = start; i < end; i++) {
-    const name = names[i];
-    elements.push(h(Box, {
-      key: name,
-      flexDirection: 'row',
-      flexShrink: 0,
-      backgroundColor: i === selectedIndex ? 'cyan' : undefined
-    },
-      h(Text, {color: i === selectedIndex ? 'black' : 'cyan', bold: true, wrap: 'truncate-end'}, `${i === selectedIndex ? '›' : ' '} `),
-      h(Text, {color: i === selectedIndex ? 'black' : undefined, bold: i === selectedIndex, wrap: 'truncate-end'}, name)));
+    elements.push(renderCollectionRow(names[i], i === selectedIndex));
   }
   if (end < names.length) elements.push(h(Text, {key: 'scroll-down', dimColor: true, wrap: 'truncate-end'}, `▼ ${names.length - end} more below`));
   return elements;
@@ -348,7 +388,9 @@ function App({initialCollection, initialCount, initialMode = 'practice'}) {
 
   const output = testResult?.output;
   const testBoxHeight = output ? Math.min(Math.max(4, Math.floor(termRows * 0.28)), 10) : 0;
-  const shortcutLines = screen === 'practice' ? (termColumns < 130 ? 2 : 1) : 1;
+  const activeShortcuts = screen === 'practice' ? practiceShortcuts : generalShortcuts;
+  const availWidth = Math.max(10, termColumns - 2);
+  const shortcutLines = calculateShortcutLines(activeShortcuts, availWidth);
   const messageLines = message ? 1 : 0;
   const footerHeight = (mode ? 1 : shortcutLines) + messageLines;
   const bodyHeight = Math.max(4, termRows - 2 - testBoxHeight - footerHeight);
@@ -397,11 +439,11 @@ function App({initialCollection, initialCount, initialMode = 'practice'}) {
       h(Text, {bold: true}, `Test output · exit ${testResult.code} · press x to clear`),
       h(Text, null, output.split('\n').slice(-Math.max(1, testBoxHeight - 3)).join('\n'))) : null,
     h(Box, {height: footerHeight, flexDirection: 'column'},
-      message ? h(Text, {color: 'yellow'}, message) : null,
+      message ? h(Text, {color: 'yellow', wrap: 'truncate-end'}, message) : null,
       mode === 'command'
         ? h(Box, {flexDirection: 'row'},
-            h(Text, {bold: true, color: 'yellow'}, 'Command: '),
-            h(Text, null, draft),
+            h(Text, {bold: true, color: 'yellow', wrap: 'truncate-end'}, 'Command: '),
+            h(Text, {wrap: 'truncate-end'}, draft),
             h(Text, {dimColor: true}, '  ·  '),
             h(Text, {bold: true, color: 'cyan'}, '[Enter]'),
             h(Text, {dimColor: true}, ' execute  '),
@@ -409,33 +451,14 @@ function App({initialCollection, initialCount, initialMode = 'practice'}) {
             h(Text, {dimColor: true}, ' cancel'))
         : mode === 'search'
         ? h(Box, {flexDirection: 'row'},
-            h(Text, {bold: true, color: 'yellow'}, 'Search: '),
-            h(Text, null, draft),
+            h(Text, {bold: true, color: 'yellow', wrap: 'truncate-end'}, 'Search: '),
+            h(Text, {wrap: 'truncate-end'}, draft),
             h(Text, {dimColor: true}, '  ·  '),
             h(Text, {bold: true, color: 'cyan'}, '[Enter]'),
             h(Text, {dimColor: true}, ' apply  '),
             h(Text, {bold: true, color: 'cyan'}, '[Esc]'),
             h(Text, {dimColor: true}, ' cancel'))
-        : screen === 'practice'
-        ? renderShortcuts([
-            ['↑↓', 'navigate'],
-            ['Enter', 'path'],
-            ['e', 'edit'],
-            ['t', 'test'],
-            ['a', 'reset attempt'],
-            ['x', 'clear output'],
-            ['s', 'search'],
-            ['c', 'clear search'],
-            ['/', 'command'],
-            ['Esc', 'collections'],
-            ['q', 'quit']
-          ])
-        : renderShortcuts([
-            ['↑↓', 'navigate'],
-            ['Enter', 'select'],
-            ['/', 'command'],
-            ['q', 'quit']
-          ])));
+        : renderShortcuts(activeShortcuts)));
 }
 
 export function startTui(options = {}) {
